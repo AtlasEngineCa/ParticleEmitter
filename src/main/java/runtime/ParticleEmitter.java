@@ -17,11 +17,12 @@ public class ParticleEmitter {
     final EmitterLocalSpace local_space;
     final EmitterInitialization initialization;
 
-    EmitterLifetime lifetime;
-    EmitterRate rate;
-    EmitterShape shape;
+    final EmitterLifetime lifetime;
+    final EmitterRate rate;
+    final EmitterShape shape;
 
-    public ParticleEmitter(EmitterInitialization initialization, EmitterLocalSpace local_space) {
+    public ParticleEmitter(EmitterInitialization initialization, EmitterLocalSpace local_space,
+                           EmitterLifetime lifetime, EmitterRate rate, EmitterShape shape) {
         this.emitter_age = 0;
 
         this.emitter_random1 = Math.random();
@@ -31,6 +32,10 @@ public class ParticleEmitter {
 
         this.initialization = initialization;
         this.local_space = local_space;
+
+        this.lifetime = lifetime;
+        this.rate = rate;
+        this.shape = shape;
     }
 
     public void tick() {
