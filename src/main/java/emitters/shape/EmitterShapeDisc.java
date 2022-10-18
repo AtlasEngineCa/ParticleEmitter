@@ -62,12 +62,12 @@ public record EmitterShapeDisc(EmitterPlaneNormalType planeNormalType,
             JsonArray planeArray = plane.getAsJsonArray();
             if (direction.isJsonPrimitive()) {
                 EmitterDirectionType type = EmitterDirectionType.valueOf(direction.getAsString().toUpperCase());
-                return new EmitterShapeDisc(null, planeArray.get(0).getAsString(), planeArray.get(1).getAsString(), planeArray.get(2).getAsString(),
+                return new EmitterShapeDisc(EmitterPlaneNormalType.CUSTOM, planeArray.get(0).getAsString(), planeArray.get(1).getAsString(), planeArray.get(2).getAsString(),
                         offset.get(0).getAsString(), offset.get(1).getAsString(), offset.get(2).getAsString(),
                         radius, surface_only, type, null, null, null);
             } else {
                 JsonArray directionArray = direction.getAsJsonArray();
-                return new EmitterShapeDisc(null, planeArray.get(0).getAsString(), planeArray.get(1).getAsString(), planeArray.get(2).getAsString(),
+                return new EmitterShapeDisc(EmitterPlaneNormalType.CUSTOM, planeArray.get(0).getAsString(), planeArray.get(1).getAsString(), planeArray.get(2).getAsString(),
                         offset.get(0).getAsString(), offset.get(1).getAsString(), offset.get(2).getAsString(),
                         radius, surface_only, EmitterDirectionType.VELOCITY, directionArray.get(0).getAsString(),
                         directionArray.get(1).getAsString(), directionArray.get(2).getAsString());

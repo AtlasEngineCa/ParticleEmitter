@@ -17,6 +17,6 @@ public class ParserTest {
         FileInputStream fis = new FileInputStream(file);
         JsonReader reader = new JsonReader(new InputStreamReader(fis, "UTF-8"));
         JsonObject map = GSON.fromJson(reader, JsonObject.class);
-        Parser.parse(map);
+        System.out.println(Parser.parse(map));
     }
 }

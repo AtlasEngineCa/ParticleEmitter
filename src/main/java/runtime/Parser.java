@@ -79,14 +79,12 @@ public class Parser {
         JsonElement particleInitialSpeed = components.get("minecraft:particle_initial_speed");
         JsonObject particleAppearanceTinting = components.get("minecraft:particle_appearance_tinting").getAsJsonObject();
 
-        ParticleEmitter emitter = new ParticleEmitter(
+        return new ParticleEmitter(
                 EmitterInitialization.parse(emitterInitialization),
                 EmitterLocalSpace.parse(emitterLocalSpace),
                 lifetime, rate, shape,
                 ParticleInitialSpeed.parse(particleInitialSpeed),
                 ParticleAppearanceTinting.parse(particleAppearanceTinting)
             );
-
-        return null;
     }
 }

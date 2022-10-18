@@ -49,4 +49,22 @@ public class ParticleEmitter {
     public void tick() {
         emitter_age++;
     }
+
+    @Override
+    public String toString() {
+        return "ParticleEmitter{" +
+                "emitter_age=" + emitter_age +
+                ", emitter_random1=" + emitter_random1 +
+                ", emitter_random2=" + emitter_random2 +
+                ", emitter_random3=" + emitter_random3 +
+                ", emitter_random4=" + emitter_random4 +
+                ", local_space=" + local_space +
+                ", initialization=" + initialization +
+                ", lifetime=" + lifetime +
+                ", rate=" + rate +
+                ", shape=" + shape +
+                ", particleColour=" + particleColour +
+                ", particleSpeed=" + particleSpeed +
+                '}';
+    }
 }
