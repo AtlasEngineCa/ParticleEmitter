@@ -67,7 +67,7 @@ public class Parser {
         } else if (emitterShapeBox != null) {
             shape = EmitterShapeBox.parse(emitterShapeBox.getAsJsonObject());
         } else if (emitterShapeCustom != null) {
-            shape = EmitterShapePoint.parse(emitterShapePoint.getAsJsonObject());
+            shape = EmitterShapePoint.parse(emitterShapeCustom.getAsJsonObject());
         } else if (emitterShapeEntityAABB != null) {
             shape = EmitterShapeEntityAABB.parse(emitterShapeEntityAABB.getAsJsonObject());
         } else if (emitterShapeDisc != null) {
