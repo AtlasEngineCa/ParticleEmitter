@@ -7,9 +7,9 @@ import runtime.Emitter;
 
 public record EmitterRateInstant(String particleNumber) implements EmitterRate {
     public static EmitterRate parse(JsonObject asJsonObject) {
-        if (asJsonObject == null) return new EmitterRateInstant("0");
+        if (asJsonObject == null) return new EmitterRateInstant("10");
         JsonElement particle_number = asJsonObject.get("num_particles");
-        String particleNumber = particle_number == null ? "0" : particle_number.getAsString();
+        String particleNumber = particle_number == null ? "10" : particle_number.getAsString();
 
         return new EmitterRateInstant(particleNumber);
     }

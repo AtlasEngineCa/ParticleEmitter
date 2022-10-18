@@ -7,11 +7,11 @@ import runtime.Emitter;
 
 public record EmitterRateSteady(String spawnRate, String maxParticles) implements EmitterRate {
     public static EmitterRate parse(JsonObject asJsonObject) {
-        if (asJsonObject == null) return new EmitterRateSteady("0", "0");
+        if (asJsonObject == null) return new EmitterRateSteady("1", "50");
         JsonElement spawn_rate = asJsonObject.get("spawn_rate");
         JsonElement max_particles = asJsonObject.get("max_particles");
-        String spawnRate = spawn_rate == null ? "0" : spawn_rate.getAsString();
-        String maxParticles = max_particles == null ? "0" : max_particles.getAsString();
+        String spawnRate = spawn_rate == null ? "1" : spawn_rate.getAsString();
+        String maxParticles = max_particles == null ? "50" : max_particles.getAsString();
 
         return new EmitterRateSteady(spawnRate, maxParticles);
     }

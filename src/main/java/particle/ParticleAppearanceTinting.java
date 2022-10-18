@@ -11,7 +11,7 @@ import java.util.Map;
 
 public record ParticleAppearanceTinting(Map<Double, Colour> color, String interpolant) {
     public static ParticleAppearanceTinting parse(JsonObject particleAppearanceTinting) {
-        JsonElement colors = particleAppearanceTinting.get("colors");
+        JsonElement colors = particleAppearanceTinting.get("color");
 
         String interpolant = null;
         Map<Double, Colour> map = new HashMap<>();

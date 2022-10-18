@@ -3,6 +3,7 @@ package emitters.shape;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
+import com.google.gson.JsonPrimitive;
 import emitters.EmitterShape;
 import misc.EmitterDirectionType;
 import net.minestom.server.coordinate.Vec;
@@ -14,12 +15,24 @@ public record EmitterShapeBox(String offsetX, String offsetY, String offsetZ,
                               boolean surfaceOnly,
                               EmitterDirectionType type,
                               String directionX, String directionY, String directionZ) implements EmitterShape {
+    private static final JsonArray defaultOffset;
+
+    static {
+        defaultOffset = new JsonArray();
+        defaultOffset.add("0");
+        defaultOffset.add("0");
+        defaultOffset.add("0");
+    }
+
     public static EmitterShape parse(JsonObject asJsonObject) {
-        JsonArray offset = asJsonObject.get("offset").getAsJsonArray();
+        JsonElement offsetEl = asJsonObject.get("offset");
+        JsonArray offset = offsetEl != null ? offsetEl.getAsJsonArray() : defaultOffset;
+
         JsonArray half_dimension = asJsonObject.get("half_dimensions").getAsJsonArray();
-        boolean surface_only = asJsonObject.get("surface_only").getAsBoolean();
+        boolean surface_only = asJsonObject.has("surface_only") && asJsonObject.get("surface_only").getAsBoolean();
 
         JsonElement direction = asJsonObject.get("direction");
+        if (direction == null) direction = new JsonPrimitive("outwards");
 
         if (direction.isJsonPrimitive()) {
             EmitterDirectionType type = EmitterDirectionType.valueOf(direction.getAsString().toUpperCase(Locale.ROOT));
