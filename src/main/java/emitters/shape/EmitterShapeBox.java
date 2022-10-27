@@ -7,14 +7,16 @@ import com.google.gson.JsonPrimitive;
 import emitters.EmitterShape;
 import misc.EmitterDirectionType;
 import net.minestom.server.coordinate.Vec;
+import runtime.ParticleEmitterScript;
 
+import java.lang.reflect.InvocationTargetException;
 import java.util.Locale;
 
-public record EmitterShapeBox(String offsetX, String offsetY, String offsetZ,
-                              String halfDimensionX, String halfDimensionY, String halfDimensionZ,
+public record EmitterShapeBox(ParticleEmitterScript offsetX, ParticleEmitterScript offsetY, ParticleEmitterScript offsetZ,
+                              ParticleEmitterScript halfDimensionX, ParticleEmitterScript halfDimensionY, ParticleEmitterScript halfDimensionZ,
                               boolean surfaceOnly,
                               EmitterDirectionType type,
-                              String directionX, String directionY, String directionZ) implements EmitterShape {
+                              ParticleEmitterScript directionX, ParticleEmitterScript directionY, ParticleEmitterScript directionZ) implements EmitterShape {
     private static final JsonArray defaultOffset;
 
     static {
@@ -24,7 +26,7 @@ public record EmitterShapeBox(String offsetX, String offsetY, String offsetZ,
         defaultOffset.add("0");
     }
 
-    public static EmitterShape parse(JsonObject asJsonObject) {
+    public static EmitterShape parse(JsonObject asJsonObject) throws InvocationTargetException, NoSuchMethodException, InstantiationException, IllegalAccessException {
         JsonElement offsetEl = asJsonObject.get("offset");
         JsonArray offset = offsetEl != null ? offsetEl.getAsJsonArray() : defaultOffset;
 
@@ -34,17 +36,24 @@ public record EmitterShapeBox(String offsetX, String offsetY, String offsetZ,
         JsonElement direction = asJsonObject.get("direction");
         if (direction == null) direction = new JsonPrimitive("outwards");
 
+        var offsetX = ParticleEmitterScript.fromString(offset.get(0).getAsString());
+        var offsetY = ParticleEmitterScript.fromString(offset.get(1).getAsString());
+        var offsetZ = ParticleEmitterScript.fromString(offset.get(2).getAsString());
+
+        var halfDimensionX = ParticleEmitterScript.fromString(half_dimension.get(0).getAsString());
+        var halfDimensionY = ParticleEmitterScript.fromString(half_dimension.get(1).getAsString());
+        var halfDimensionZ = ParticleEmitterScript.fromString(half_dimension.get(2).getAsString());
+
         if (direction.isJsonPrimitive()) {
             EmitterDirectionType type = EmitterDirectionType.valueOf(direction.getAsString().toUpperCase(Locale.ROOT));
-            return new EmitterShapeBox(offset.get(0).getAsString(), offset.get(1).getAsString(), offset.get(2).getAsString(),
-                    half_dimension.get(0).getAsString(), half_dimension.get(1).getAsString(), half_dimension.get(2).getAsString(),
-                    surface_only, type, null, null, null);
+            return new EmitterShapeBox(offsetX, offsetY, offsetZ, halfDimensionX, halfDimensionY, halfDimensionZ, surface_only, type, null, null, null);
         } else {
             JsonArray directionArray = direction.getAsJsonArray();
-            return new EmitterShapeBox(offset.get(0).getAsString(), offset.get(1).getAsString(), offset.get(2).getAsString(),
-                    half_dimension.get(0).getAsString(), half_dimension.get(1).getAsString(), half_dimension.get(2).getAsString(),
-                    surface_only, EmitterDirectionType.VELOCITY, directionArray.get(0).getAsString(),
-                    directionArray.get(1).getAsString(), directionArray.get(2).getAsString());
+            var directionX = ParticleEmitterScript.fromString(directionArray.get(0).getAsString());
+            var directionY = ParticleEmitterScript.fromString(directionArray.get(1).getAsString());
+            var directionZ = ParticleEmitterScript.fromString(directionArray.get(2).getAsString());
+
+            return new EmitterShapeBox(offsetX, offsetY, offsetZ, halfDimensionX, halfDimensionY, halfDimensionZ, surface_only, EmitterDirectionType.VELOCITY, directionX, directionY, directionZ);
         }
     }
 

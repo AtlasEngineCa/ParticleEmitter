@@ -1,9 +1,12 @@
 package emitters.init;
 
 import com.google.gson.JsonElement;
+import runtime.ParticleEmitterScript;
 
-public record EmitterInitialization(String creationExpression, String perUpdateExpression) {
-    public static EmitterInitialization parse(JsonElement emitterInitialization) {
+import java.lang.reflect.InvocationTargetException;
+
+public record EmitterInitialization(ParticleEmitterScript creationExpression, ParticleEmitterScript perUpdateExpression) {
+    public static EmitterInitialization parse(JsonElement emitterInitialization) throws InvocationTargetException, NoSuchMethodException, InstantiationException, IllegalAccessException {
         if (emitterInitialization == null) return new EmitterInitialization(null, null);
 
         JsonElement creation_expression = emitterInitialization.getAsJsonObject().get("creation_expression");
@@ -12,6 +15,6 @@ public record EmitterInitialization(String creationExpression, String perUpdateE
         String creationExpression = creation_expression == null ? null : creation_expression.getAsString();
         String perUpdateExpression = per_update_expression == null ? null : per_update_expression.getAsString();
 
-        return new EmitterInitialization(creationExpression, perUpdateExpression);
+        return new EmitterInitialization(ParticleEmitterScript.fromString(creationExpression), ParticleEmitterScript.fromString(perUpdateExpression));
     }
 }

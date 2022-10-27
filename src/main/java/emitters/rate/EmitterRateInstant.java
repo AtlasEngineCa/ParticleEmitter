@@ -4,12 +4,15 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import emitters.EmitterRate;
 import runtime.Emitter;
+import runtime.ParticleEmitterScript;
 
-public record EmitterRateInstant(String particleNumber) implements EmitterRate {
-    public static EmitterRate parse(JsonObject asJsonObject) {
-        if (asJsonObject == null) return new EmitterRateInstant("10");
+import java.lang.reflect.InvocationTargetException;
+
+public record EmitterRateInstant(ParticleEmitterScript particleNumber) implements EmitterRate {
+    public static EmitterRate parse(JsonObject asJsonObject) throws InvocationTargetException, NoSuchMethodException, InstantiationException, IllegalAccessException {
+        if (asJsonObject == null) return new EmitterRateInstant(ParticleEmitterScript.fromDouble(10));
         JsonElement particle_number = asJsonObject.get("num_particles");
-        String particleNumber = particle_number == null ? "10" : particle_number.getAsString();
+        var particleNumber = particle_number == null ? ParticleEmitterScript.fromDouble(10) : ParticleEmitterScript.fromString(particle_number.getAsString());
 
         return new EmitterRateInstant(particleNumber);
     }

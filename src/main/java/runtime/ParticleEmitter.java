@@ -5,6 +5,8 @@ import emitters.EmitterRate;
 import emitters.EmitterShape;
 import emitters.init.EmitterInitialization;
 import emitters.init.EmitterLocalSpace;
+import net.hollowcube.mql.foreign.Query;
+import net.hollowcube.mql.jit.MqlCompiler;
 import particle.ParticleAppearanceTinting;
 import particle.ParticleInitialSpeed;
 
@@ -26,6 +28,31 @@ public class ParticleEmitter {
     private final ParticleAppearanceTinting particleColour;
     private final ParticleInitialSpeed particleSpeed;
 
+    @Query
+    public double emitter_age() {
+        return emitter_age;
+    }
+
+    @Query
+    public double emitter_random1() {
+        return emitter_random1;
+    }
+
+    @Query
+    public double emitter_random2() {
+        return emitter_random2;
+    }
+
+    @Query
+    public double emitter_random3() {
+        return emitter_random3;
+    }
+
+    @Query
+    public double emitter_random4() {
+        return emitter_random4;
+    }
+
     public ParticleEmitter(EmitterInitialization initialization, EmitterLocalSpace local_space,
                            EmitterLifetime lifetime, EmitterRate rate, EmitterShape shape,
                            ParticleInitialSpeed particleSpeed, ParticleAppearanceTinting particleColour) {
@@ -44,6 +71,14 @@ public class ParticleEmitter {
         this.shape = shape;
         this.particleSpeed = particleSpeed;
         this.particleColour = particleColour;
+
+        MqlCompiler<ParticleEmitterScript> compiler = new MqlCompiler<>(ParticleEmitterScript.class);
+        Class<ParticleEmitterScript> scriptClass = compiler.compile("1 + variable.emitter_age");
+        try {
+            System.out.println(scriptClass.newInstance().evaluate(this));
+        } catch (InstantiationException | IllegalAccessException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     public void tick() {

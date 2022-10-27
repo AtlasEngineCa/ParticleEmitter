@@ -16,8 +16,10 @@ import emitters.shape.*;
 import particle.ParticleAppearanceTinting;
 import particle.ParticleInitialSpeed;
 
+import java.lang.reflect.InvocationTargetException;
+
 public class Parser {
-    public static ParticleEmitter parse(JsonObject description) {
+    public static ParticleEmitter parse(JsonObject description) throws InvocationTargetException, NoSuchMethodException, InstantiationException, IllegalAccessException {
         String version = description.get("format_version").getAsString();
         JsonObject particleEffect = description.get("particle_effect").getAsJsonObject();
         JsonObject components = particleEffect.get("components").getAsJsonObject();
@@ -34,7 +36,7 @@ public class Parser {
         } else if (emitterRateSteady != null) {
             rate = EmitterRateSteady.parse(emitterRateSteady.getAsJsonObject());
         } else {
-            rate = new EmitterRateInstant("100");
+            rate = new EmitterRateInstant(ParticleEmitterScript.fromDouble(100));
         }
 
         JsonElement emitterLifetimeLooping = components.get("minecraft:emitter_lifetime_looping");
@@ -49,7 +51,7 @@ public class Parser {
         } else if (emitterLifetimeExpression != null) {
             lifetime = EmitterLifetimeExpression.parse(emitterLifetimeExpression.getAsJsonObject());
         } else {
-            lifetime = new EmitterLifetimeOnce("100");
+            lifetime = new EmitterLifetimeOnce(ParticleEmitterScript.fromDouble(100));
         }
 
         JsonElement emitterShapePoint = components.get("minecraft:emitter_shape_point");
