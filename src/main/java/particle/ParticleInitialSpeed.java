@@ -1,7 +1,6 @@
 package particle;
 
 import com.google.gson.JsonElement;
-import runtime.ParticleEmitter;
 import runtime.ParticleEmitterScript;
 
 import java.lang.reflect.InvocationTargetException;

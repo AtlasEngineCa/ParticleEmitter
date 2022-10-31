@@ -102,7 +102,42 @@ public record EmitterShapeDisc(EmitterPlaneNormalType planeNormalType,
 
     @Override
     public Vec emitPosition(ParticleEmitter particleEmitter) {
-        return null;
+        double x = 0;
+        double y = 0;
+        double z = 0;
+
+        if (planeNormalType == EmitterPlaneNormalType.CUSTOM) {
+            x = planeX.evaluate(particleEmitter);
+            y = planeY.evaluate(particleEmitter);
+            z = planeZ.evaluate(particleEmitter);
+        } else {
+            switch (planeNormalType) {
+                case X -> x = 1;
+                case Y -> y = 1;
+                case Z -> z = 1;
+            }
+        }
+
+        double radius = this.radius.evaluate(particleEmitter);
+        double angle = Math.random() * 2 * Math.PI;
+        double distance = Math.random() * radius;
+
+        double offsetX = this.offsetX.evaluate(particleEmitter);
+        double offsetY = this.offsetY.evaluate(particleEmitter);
+        double offsetZ = this.offsetZ.evaluate(particleEmitter);
+
+        double x1 = x * distance * Math.cos(angle) + offsetX;
+        double y1 = y * distance * Math.sin(angle) + offsetY;
+        double z1 = z * distance * Math.cos(angle) + offsetZ;
+
+        if (surfaceOnly) {
+            double length = Math.sqrt(x1 * x1 + y1 * y1 + z1 * z1);
+            x1 = x1 / length * radius;
+            y1 = y1 / length * radius;
+            z1 = z1 / length * radius;
+        }
+
+        return new Vec(x1, y1, z1);
     }
 
     @Override

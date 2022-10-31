@@ -64,11 +64,43 @@ public record EmitterShapeSphere(ParticleEmitterScript offsetX, ParticleEmitterS
 
     @Override
     public Vec emitPosition(ParticleEmitter particleEmitter) {
-        return null;
+        double radius = this.radius.evaluate(particleEmitter);
+        double x = offsetX.evaluate(particleEmitter);
+        double y = offsetY.evaluate(particleEmitter);
+        double z = offsetZ.evaluate(particleEmitter);
+
+        if (surfaceOnly) {
+            double theta = Math.random() * 2 * Math.PI;
+            double phi = Math.acos(2 * Math.random() - 1);
+
+            x += radius * Math.sin(phi) * Math.cos(theta);
+            y += radius * Math.sin(phi) * Math.sin(theta);
+            z += radius * Math.cos(phi);
+        } else {
+            double theta = Math.random() * 2 * Math.PI;
+            double phi = Math.acos(2 * Math.random() - 1);
+            double r = Math.random() * radius;
+
+            x += r * Math.sin(phi) * Math.cos(theta);
+            y += r * Math.sin(phi) * Math.sin(theta);
+            z += r * Math.cos(phi);
+        }
+
+        return new Vec(x, y, z);
     }
 
     @Override
     public Vec emitDirection(ParticleEmitter particleEmitter) {
-        return null;
+        if (type == EmitterDirectionType.VELOCITY) {
+            double x = directionX.evaluate(particleEmitter);
+            double y = directionY.evaluate(particleEmitter);
+            double z = directionZ.evaluate(particleEmitter);
+
+            return new Vec(x, y, z);
+        } else if (type == EmitterDirectionType.INWARDS){
+            return emitPosition(particleEmitter).normalize();
+        } else {
+            return Vec.ZERO.sub(emitPosition(particleEmitter).normalize());
+        }
     }
 }

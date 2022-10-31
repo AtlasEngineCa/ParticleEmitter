@@ -5,6 +5,7 @@ import emitters.EmitterRate;
 import emitters.EmitterShape;
 import emitters.init.EmitterInitialization;
 import emitters.init.EmitterLocalSpace;
+import emitters.shape.EmitterShapeEntityAABB;
 import net.hollowcube.mql.foreign.Query;
 import net.minestom.server.coordinate.Vec;
 import particle.ParticleAppearanceTinting;

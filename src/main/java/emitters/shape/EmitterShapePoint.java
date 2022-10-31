@@ -61,11 +61,11 @@ public record EmitterShapePoint(ParticleEmitterScript offsetX, ParticleEmitterSc
 
     @Override
     public Vec emitPosition(ParticleEmitter particleEmitter) {
-        return null;
+        return new Vec(offsetX.evaluate(particleEmitter), offsetY.evaluate(particleEmitter), offsetZ.evaluate(particleEmitter));
     }
 
     @Override
     public Vec emitDirection(ParticleEmitter particleEmitter) {
-        return null;
+        return new Vec(directionX.evaluate(particleEmitter), directionY.evaluate(particleEmitter), directionZ.evaluate(particleEmitter));
     }
 }

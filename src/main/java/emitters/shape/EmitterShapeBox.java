@@ -60,11 +60,50 @@ public record EmitterShapeBox(ParticleEmitterScript offsetX, ParticleEmitterScri
 
     @Override
     public Vec emitPosition(ParticleEmitter particleEmitter) {
-        return null;
+        double x = offsetX.evaluate(particleEmitter);
+        double y = offsetY.evaluate(particleEmitter);
+        double z = offsetZ.evaluate(particleEmitter);
+
+        double halfDimensionX = this.halfDimensionX.evaluate(particleEmitter);
+        double halfDimensionY = this.halfDimensionY.evaluate(particleEmitter);
+        double halfDimensionZ = this.halfDimensionZ.evaluate(particleEmitter);
+
+        double randomX = Math.random() * halfDimensionX * 2 - halfDimensionX;
+        double randomY = Math.random() * halfDimensionY * 2 - halfDimensionY;
+        double randomZ = Math.random() * halfDimensionZ * 2 - halfDimensionZ;
+
+        // Force to surface
+        if (surfaceOnly) {
+            double random = Math.random() * 6;
+            if (random < 1) {
+                randomX = -halfDimensionX;
+            } else if (random < 2) {
+                randomX = halfDimensionX;
+            } else if (random < 3) {
+                randomY = -halfDimensionY;
+            } else if (random < 4) {
+                randomY = halfDimensionY;
+            } else if (random < 5) {
+                randomZ = -halfDimensionZ;
+            } else {
+                randomZ = halfDimensionZ;
+            }
+        }
+
+        return new Vec(x + randomX, y + randomY, z + randomZ);
     }
 
     @Override
     public Vec emitDirection(ParticleEmitter particleEmitter) {
-        return null;
+        if (type == EmitterDirectionType.VELOCITY) {
+            double x = directionX.evaluate(particleEmitter);
+            double y = directionY.evaluate(particleEmitter);
+            double z = directionZ.evaluate(particleEmitter);
+            return new Vec(x, y, z);
+        } else if (type == EmitterDirectionType.OUTWARDS) {
+            return emitPosition(particleEmitter).normalize();
+        } else {
+            return Vec.ZERO.sub(emitPosition(particleEmitter).normalize());
+        }
     }
 }
