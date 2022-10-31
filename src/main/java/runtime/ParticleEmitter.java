@@ -104,6 +104,7 @@ public class ParticleEmitter implements ParticleInterface {
     public void tick() {
         emitter_age++;
         initialization.update(this);
+        particles.forEach(Particle::tick);
 
         EmitterLifetime.LifetimeState isActive = lifetime.getState(this);
         if (isActive == EmitterLifetime.LifetimeState.DEAD || isActive == EmitterLifetime.LifetimeState.INACTIVE)
