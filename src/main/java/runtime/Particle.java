@@ -2,7 +2,7 @@ package runtime;
 
 import net.hollowcube.mql.foreign.Query;
 
-public class Particle {
+public class Particle implements ParticleInterface {
     private final ParticleEmitter emitter;
     int particle_age;
 
@@ -10,6 +10,11 @@ public class Particle {
     final double particle_random_2;
     final double particle_random_3;
     final double particle_random_4;
+
+    @Query
+    public double particle_age() {
+        return particle_age;
+    }
 
     @Query
     public double particle_random_1() {
@@ -31,29 +36,34 @@ public class Particle {
         return particle_random_4;
     }
 
+    @Override
+    public int particle_count() {
+        return emitter.particle_count();
+    }
+
     @Query
     public double emitter_age() {
         return emitter.emitter_age();
     }
 
     @Query
-    public double emitter_random1() {
-        return emitter.emitter_random1();
+    public double emitter_random_1() {
+        return emitter.emitter_random_1();
     }
 
     @Query
-    public double emitter_random2() {
-        return emitter.emitter_random2();
+    public double emitter_random_2() {
+        return emitter.emitter_random_2();
     }
 
     @Query
-    public double emitter_random3() {
-        return emitter.emitter_random3();
+    public double emitter_random_3() {
+        return emitter.emitter_random_3();
     }
 
     @Query
-    public double emitter_random4() {
-        return emitter.emitter_random4();
+    public double emitter_random_4() {
+        return emitter.emitter_random_4();
     }
 
     public Particle(ParticleEmitter emitter) {

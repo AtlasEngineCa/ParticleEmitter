@@ -75,7 +75,7 @@ public class Parser {
         } else if (emitterShapeDisc != null) {
             shape = EmitterShapeDisc.parse(emitterShapeDisc.getAsJsonObject());
         } else {
-            shape = new EmitterShapePoint("0", "0", "0", "0", "0", "0");
+            shape = new EmitterShapePoint();
         }
 
         JsonElement particleInitialSpeed = components.get("minecraft:particle_initial_speed");

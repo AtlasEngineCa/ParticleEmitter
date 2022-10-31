@@ -3,14 +3,16 @@ package emitters.shape;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
-import com.google.gson.JsonPrimitive;
 import emitters.EmitterShape;
 import misc.EmitterDirectionType;
 import net.minestom.server.coordinate.Vec;
+import runtime.ParticleEmitterScript;
+
+import java.lang.reflect.InvocationTargetException;
 
 public record EmitterShapeEntityAABB(boolean surfaceOnly,
                                      EmitterDirectionType type,
-                                     String directionX, String directionY, String directionZ) implements EmitterShape {
+                                     ParticleEmitterScript directionX, ParticleEmitterScript directionY, ParticleEmitterScript directionZ) implements EmitterShape {
     private static final JsonArray defaultDirection;
 
     static {
@@ -20,7 +22,7 @@ public record EmitterShapeEntityAABB(boolean surfaceOnly,
         defaultDirection.add("0");
     }
 
-    public static EmitterShape parse(JsonObject asJsonObject) {
+    public static EmitterShape parse(JsonObject asJsonObject) throws InvocationTargetException, NoSuchMethodException, InstantiationException, IllegalAccessException {
         boolean surface_only = asJsonObject.has("surface_only") && asJsonObject.get("surface_only").getAsBoolean();
 
         JsonElement direction = asJsonObject.get("direction");
@@ -31,8 +33,13 @@ public record EmitterShapeEntityAABB(boolean surfaceOnly,
             return new EmitterShapeEntityAABB(surface_only, type, null, null, null);
         } else {
             JsonArray directionArray = direction.getAsJsonArray();
-            return new EmitterShapeEntityAABB(surface_only, EmitterDirectionType.VELOCITY, directionArray.get(0).getAsString(),
-                    directionArray.get(1).getAsString(), directionArray.get(2).getAsString());
+
+            var directionX = ParticleEmitterScript.fromString(directionArray.get(0).getAsString());
+            var directionY = ParticleEmitterScript.fromString(directionArray.get(1).getAsString());
+            var directionZ = ParticleEmitterScript.fromString(directionArray.get(2).getAsString());
+
+            return new EmitterShapeEntityAABB(surface_only, EmitterDirectionType.VELOCITY,
+                    directionX, directionY, directionZ);
         }
     }
 

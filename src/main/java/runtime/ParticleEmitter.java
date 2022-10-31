@@ -5,17 +5,20 @@ import emitters.EmitterRate;
 import emitters.EmitterShape;
 import emitters.init.EmitterInitialization;
 import emitters.init.EmitterLocalSpace;
-import net.hollowcube.mql.foreign.Query;
 import particle.ParticleAppearanceTinting;
 import particle.ParticleInitialSpeed;
 
-public class ParticleEmitter {
-    private int emitter_age;
+import java.util.HashSet;
+import java.util.Set;
 
-    private final double emitter_random1;
-    private final double emitter_random2;
-    private final double emitter_random3;
-    private final double emitter_random4;
+public class ParticleEmitter implements ParticleInterface {
+    private Set<Particle> particles = new HashSet<>();
+
+    private int emitter_age;
+    private final double emitter_random_1;
+    private final double emitter_random_2;
+    private final double emitter_random_3;
+    private final double emitter_random_4;
 
     private final EmitterLocalSpace local_space;
     private final EmitterInitialization initialization;
@@ -27,20 +30,38 @@ public class ParticleEmitter {
     private final ParticleAppearanceTinting particleColour;
     private final ParticleInitialSpeed particleSpeed;
 
+    public int particle_count() {
+        return particles.size();
+    }
     public double emitter_age() {
         return emitter_age;
     }
-    public double emitter_random1() {
-        return emitter_random1;
+    public double emitter_random_1() {
+        return emitter_random_1;
     }
-    public double emitter_random2() {
-        return emitter_random2;
+    public double emitter_random_2() {
+        return emitter_random_2;
     }
-    public double emitter_random3() {
-        return emitter_random3;
+    public double emitter_random_3() {
+        return emitter_random_3;
     }
-    public double emitter_random4() {
-        return emitter_random4;
+    public double emitter_random_4() {
+        return emitter_random_4;
+    }
+    public double particle_age() {
+        return 0;
+    }
+    public double particle_random_1() {
+        return 0;
+    }
+    public double particle_random_2() {
+        return 0;
+    }
+    public double particle_random_3() {
+        return 0;
+    }
+    public double particle_random_4() {
+        return 0;
     }
 
     public ParticleEmitter(EmitterInitialization initialization, EmitterLocalSpace local_space,
@@ -48,10 +69,10 @@ public class ParticleEmitter {
                            ParticleInitialSpeed particleSpeed, ParticleAppearanceTinting particleColour) {
         this.emitter_age = 0;
 
-        this.emitter_random1 = Math.random();
-        this.emitter_random2 = Math.random();
-        this.emitter_random3 = Math.random();
-        this.emitter_random4 = Math.random();
+        this.emitter_random_1 = Math.random();
+        this.emitter_random_2 = Math.random();
+        this.emitter_random_3 = Math.random();
+        this.emitter_random_4 = Math.random();
 
         this.initialization = initialization;
         this.local_space = local_space;
@@ -65,16 +86,17 @@ public class ParticleEmitter {
 
     public void tick() {
         emitter_age++;
+        boolean canCreateParticle = rate.canEmit(this);
     }
 
     @Override
     public String toString() {
         return "ParticleEmitter{" +
                 "emitter_age=" + emitter_age +
-                ", emitter_random1=" + emitter_random1 +
-                ", emitter_random2=" + emitter_random2 +
-                ", emitter_random3=" + emitter_random3 +
-                ", emitter_random4=" + emitter_random4 +
+                ", emitter_random1=" + emitter_random_1 +
+                ", emitter_random2=" + emitter_random_2 +
+                ", emitter_random3=" + emitter_random_3 +
+                ", emitter_random4=" + emitter_random_4 +
                 ", local_space=" + local_space +
                 ", initialization=" + initialization +
                 ", lifetime=" + lifetime +

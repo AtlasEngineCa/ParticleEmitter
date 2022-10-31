@@ -3,8 +3,8 @@ package emitters.rate;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import emitters.EmitterRate;
-import runtime.Emitter;
 import runtime.ParticleEmitterScript;
+import runtime.ParticleInterface;
 
 import java.lang.reflect.InvocationTargetException;
 
@@ -13,12 +13,11 @@ public record EmitterRateInstant(ParticleEmitterScript particleNumber) implement
         if (asJsonObject == null) return new EmitterRateInstant(ParticleEmitterScript.fromDouble(10));
         JsonElement particle_number = asJsonObject.get("num_particles");
         var particleNumber = particle_number == null ? ParticleEmitterScript.fromDouble(10) : ParticleEmitterScript.fromString(particle_number.getAsString());
-
         return new EmitterRateInstant(particleNumber);
     }
 
     @Override
-    public boolean canEmit(Emitter emitter) {
+    public boolean canEmit(ParticleInterface emitter) {
         return false;
     }
 }

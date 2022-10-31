@@ -73,7 +73,6 @@ public record EmitterShapeDisc(EmitterPlaneNormalType planeNormalType,
             }
         } else {
             JsonArray planeArray = plane.getAsJsonArray();
-            System.out.println(planeArray);
             var planeX = ParticleEmitterScript.fromString(planeArray.get(0).getAsString());
             var planeY = ParticleEmitterScript.fromString(planeArray.get(1).getAsString());
             var planeZ = ParticleEmitterScript.fromString(planeArray.get(2).getAsString());

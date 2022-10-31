@@ -1,16 +1,26 @@
 package particle;
 
 import com.google.gson.JsonElement;
+import runtime.ParticleEmitter;
+import runtime.ParticleEmitterScript;
 
-public record ParticleInitialSpeed(String speedX, String speedY, String speedZ) {
-    public static ParticleInitialSpeed parse(JsonElement particleInitialSpeed) {
-        if (particleInitialSpeed == null) return new ParticleInitialSpeed("0", "0", "0");
+import java.lang.reflect.InvocationTargetException;
+
+public record ParticleInitialSpeed(ParticleEmitterScript speedX, ParticleEmitterScript speedY, ParticleEmitterScript speedZ) {
+    public static ParticleInitialSpeed parse(JsonElement particleInitialSpeed) throws InvocationTargetException, NoSuchMethodException, InstantiationException, IllegalAccessException {
+        if (particleInitialSpeed == null) return new ParticleInitialSpeed(ParticleEmitterScript.fromDouble(0), ParticleEmitterScript.fromDouble(0), ParticleEmitterScript.fromDouble(0));
 
         if (particleInitialSpeed.isJsonArray()) {
             var asArray = particleInitialSpeed.getAsJsonArray();
-            return new ParticleInitialSpeed(asArray.get(0).getAsString(), asArray.get(1).getAsString(), asArray.get(2).getAsString());
+
+            ParticleEmitterScript speedX = ParticleEmitterScript.fromString(asArray.get(0).getAsString());
+            ParticleEmitterScript speedY = ParticleEmitterScript.fromString(asArray.get(1).getAsString());
+            ParticleEmitterScript speedZ = ParticleEmitterScript.fromString(asArray.get(2).getAsString());
+
+            return new ParticleInitialSpeed(speedX, speedY, speedZ);
         }
 
-        return new ParticleInitialSpeed(particleInitialSpeed.getAsString(), particleInitialSpeed.getAsString(), particleInitialSpeed.getAsString());
+        ParticleEmitterScript speed = ParticleEmitterScript.fromString(particleInitialSpeed.getAsString());
+        return new ParticleInitialSpeed(speed, speed, speed);
     }
 }

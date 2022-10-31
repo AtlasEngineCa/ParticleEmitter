@@ -3,8 +3,8 @@ package emitters.rate;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import emitters.EmitterRate;
-import runtime.Emitter;
 import runtime.ParticleEmitterScript;
+import runtime.ParticleInterface;
 
 import java.lang.reflect.InvocationTargetException;
 
@@ -20,7 +20,7 @@ public record EmitterRateSteady(ParticleEmitterScript spawnRate, ParticleEmitter
     }
 
     @Override
-    public boolean canEmit(Emitter emitter) {
+    public boolean canEmit(ParticleInterface emitter) {
         return false;
     }
 }

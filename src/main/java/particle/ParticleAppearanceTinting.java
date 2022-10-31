@@ -4,16 +4,18 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import misc.Colour;
+import runtime.ParticleEmitterScript;
 
 import java.awt.*;
+import java.lang.reflect.InvocationTargetException;
 import java.util.HashMap;
 import java.util.Map;
 
-public record ParticleAppearanceTinting(Map<Double, Colour> color, String interpolant) {
-    public static ParticleAppearanceTinting parse(JsonObject particleAppearanceTinting) {
+public record ParticleAppearanceTinting(Map<Double, Colour> color, ParticleEmitterScript interpolant) {
+    public static ParticleAppearanceTinting parse(JsonObject particleAppearanceTinting) throws InvocationTargetException, NoSuchMethodException, InstantiationException, IllegalAccessException {
         JsonElement colors = particleAppearanceTinting.get("color");
 
-        String interpolant = null;
+        ParticleEmitterScript interpolant = null;
         Map<Double, Colour> map = new HashMap<>();
 
         if (colors.isJsonArray()) {
@@ -27,7 +29,7 @@ public record ParticleAppearanceTinting(Map<Double, Colour> color, String interp
             var c = Color.decode(color);
             map.put(0.0, new Colour(c.getRed(), c.getGreen(), c.getBlue()));
         } else if (colors.isJsonObject()) {
-            interpolant = colors.getAsJsonObject().get("interpolant").getAsString();
+            interpolant = ParticleEmitterScript.fromString(colors.getAsJsonObject().get("interpolant").getAsString());
 
             if (colors.getAsJsonObject().has("gradient")) {
                 JsonElement gradient = colors.getAsJsonObject().get("gradient");

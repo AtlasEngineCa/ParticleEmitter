@@ -4,6 +4,7 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import emitters.EmitterLifetime;
 import runtime.ParticleEmitterScript;
+import runtime.ParticleInterface;
 
 import java.lang.reflect.InvocationTargetException;
 
@@ -19,7 +20,7 @@ public record EmitterLifetimeLooping(ParticleEmitterScript activeTime, ParticleE
     }
 
     @Override
-    public LifetimeState getState() {
+    public LifetimeState getState(ParticleInterface i) {
         return null;
     }
 }

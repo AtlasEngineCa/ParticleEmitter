@@ -1,7 +1,7 @@
 package emitters;
 
-import runtime.Emitter;
+import runtime.ParticleInterface;
 
 public interface EmitterRate {
-    boolean canEmit(Emitter emitter);
+    boolean canEmit(ParticleInterface emitter);
 }
