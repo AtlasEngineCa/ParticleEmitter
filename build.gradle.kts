@@ -51,7 +51,7 @@ dependencies {
     testImplementation("org.junit.jupiter:junit-jupiter-api:5.8.1")
     testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:5.8.1")
     implementation("com.github.Minestom:Minestom:5f8842084c")
-    implementation("com.github.hollow-cube.common:mql:fb8150f")
+    implementation("com.github.hollow-cube.common:mql:d99422e")
 }
 
 tasks.getByName<Test>("test") {

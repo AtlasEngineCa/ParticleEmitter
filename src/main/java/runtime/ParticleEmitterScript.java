@@ -6,7 +6,7 @@ import net.hollowcube.mql.jit.MqlEnv;
 import java.lang.reflect.InvocationTargetException;
 
 public interface ParticleEmitterScript {
-    double evaluate(@MqlEnv({"variable", "v"}) ParticleEmitter emitter);
+    double evaluate(@MqlEnv({"variable", "v"}) Particle particle);
 
     static ParticleEmitterScript fromDouble(double value) throws InvocationTargetException, NoSuchMethodException, InstantiationException, IllegalAccessException {
         return fromString(Double.toString(value));
