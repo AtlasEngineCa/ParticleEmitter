@@ -8,6 +8,7 @@ import emitters.EmitterShape;
 import misc.EmitterDirectionType;
 import misc.EmitterPlaneNormalType;
 import net.minestom.server.coordinate.Vec;
+import runtime.ParticleEmitter;
 import runtime.ParticleEmitterScript;
 
 import java.lang.reflect.InvocationTargetException;
@@ -100,12 +101,12 @@ public record EmitterShapeDisc(EmitterPlaneNormalType planeNormalType,
     }
 
     @Override
-    public Vec emitPosition() {
+    public Vec emitPosition(ParticleEmitter particleEmitter) {
         return null;
     }
 
     @Override
-    public Vec emitDirection() {
+    public Vec emitDirection(ParticleEmitter particleEmitter) {
         return null;
     }
 }

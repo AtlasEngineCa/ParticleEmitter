@@ -6,6 +6,7 @@ import com.google.gson.JsonObject;
 import emitters.EmitterShape;
 import misc.EmitterDirectionType;
 import net.minestom.server.coordinate.Vec;
+import runtime.ParticleEmitter;
 import runtime.ParticleEmitterScript;
 
 import java.lang.reflect.InvocationTargetException;
@@ -44,12 +45,12 @@ public record EmitterShapeEntityAABB(boolean surfaceOnly,
     }
 
     @Override
-    public Vec emitPosition() {
+    public Vec emitPosition(ParticleEmitter particleEmitter) {
         return null;
     }
 
     @Override
-    public Vec emitDirection() {
+    public Vec emitDirection(ParticleEmitter particleEmitter) {
         return null;
     }
 }

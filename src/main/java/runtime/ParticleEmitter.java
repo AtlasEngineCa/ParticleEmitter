@@ -6,6 +6,7 @@ import emitters.EmitterShape;
 import emitters.init.EmitterInitialization;
 import emitters.init.EmitterLocalSpace;
 import net.hollowcube.mql.foreign.Query;
+import net.minestom.server.coordinate.Vec;
 import particle.ParticleAppearanceTinting;
 import particle.ParticleInitialSpeed;
 import particle.ParticleLifetime;
@@ -113,7 +114,10 @@ public class ParticleEmitter implements ParticleInterface {
         boolean canCreateParticle = rate.canEmit(this);
 
         if (canCreateParticle) {
-            Particle particle = new Particle(this, particleSpeed, particleColour, particleLifetime);
+            Vec position = shape.emitPosition(this);
+            Vec direction = shape.emitDirection(this);
+
+            Particle particle = new Particle(position, direction, this, particleColour, particleLifetime);
             particles.add(particle);
         }
     }

@@ -1,13 +1,15 @@
 package runtime;
 
+import generator.ParticleGenerator;
+import misc.Colour;
 import net.hollowcube.mql.foreign.Query;
+import net.minestom.server.coordinate.Vec;
+import net.minestom.server.network.packet.server.play.ParticlePacket;
 import particle.ParticleAppearanceTinting;
-import particle.ParticleInitialSpeed;
 import particle.ParticleLifetime;
 
 public class Particle implements ParticleInterface {
     private final ParticleEmitter emitter;
-    private final ParticleInitialSpeed particleSpeed;
     private final ParticleAppearanceTinting particleColour;
     private final ParticleLifetime particleLifetime;
 
@@ -73,7 +75,7 @@ public class Particle implements ParticleInterface {
         return emitter.emitter_random_4();
     }
 
-    public Particle(ParticleEmitter emitter, ParticleInitialSpeed particleSpeed, ParticleAppearanceTinting particleColour, ParticleLifetime particleLifetime) {
+    public Particle(Vec start, Vec direction, ParticleEmitter emitter, ParticleAppearanceTinting particleColour, ParticleLifetime particleLifetime) {
         this.particle_age = 0;
 
         this.particle_random_1 = Math.random();
@@ -83,9 +85,25 @@ public class Particle implements ParticleInterface {
 
         this.emitter = emitter;
 
-        this.particleSpeed = particleSpeed;
         this.particleColour = particleColour;
         this.particleLifetime = particleLifetime;
+
+        draw(start, direction);
+    }
+
+    public void draw(Vec start, Vec direction) {
+        Colour colour = particleColour.evaluate(this);
+        ParticlePacket particle = ParticleGenerator.buildParticle(net.minestom.server.particle.Particle.DUST,
+                start.x(),
+                start.y(),
+                start.z(),
+                1,
+                direction.x(),
+                direction.y(),
+                direction.z(),
+                colour.r(),
+                colour.g(),
+                colour.b());
     }
 
     public void tick() {
