@@ -15,6 +15,7 @@ import emitters.rate.EmitterRateSteady;
 import emitters.shape.*;
 import particle.ParticleAppearanceTinting;
 import particle.ParticleInitialSpeed;
+import particle.ParticleLifetimeExpression;
 
 import java.lang.reflect.InvocationTargetException;
 
@@ -80,13 +81,15 @@ public class Parser {
 
         JsonElement particleInitialSpeed = components.get("minecraft:particle_initial_speed");
         JsonObject particleAppearanceTinting = components.get("minecraft:particle_appearance_tinting").getAsJsonObject();
+        JsonObject particleLifetimeExpression = components.get("minecraft:particle_lifetime_expression").getAsJsonObject();
 
         return new ParticleEmitter(
                 EmitterInitialization.parse(emitterInitialization),
                 EmitterLocalSpace.parse(emitterLocalSpace),
                 lifetime, rate, shape,
                 ParticleInitialSpeed.parse(particleInitialSpeed),
-                ParticleAppearanceTinting.parse(particleAppearanceTinting)
+                ParticleAppearanceTinting.parse(particleAppearanceTinting),
+                ParticleLifetimeExpression.parse(particleLifetimeExpression)
             );
     }
 }

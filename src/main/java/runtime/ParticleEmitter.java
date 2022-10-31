@@ -8,6 +8,7 @@ import emitters.init.EmitterLocalSpace;
 import net.hollowcube.mql.foreign.Query;
 import particle.ParticleAppearanceTinting;
 import particle.ParticleInitialSpeed;
+import particle.ParticleLifetime;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -30,6 +31,7 @@ public class ParticleEmitter implements ParticleInterface {
 
     private final ParticleAppearanceTinting particleColour;
     private final ParticleInitialSpeed particleSpeed;
+    private final ParticleLifetime particleLifetime;
 
     @Query
     public int particle_count() {
@@ -78,7 +80,7 @@ public class ParticleEmitter implements ParticleInterface {
 
     public ParticleEmitter(EmitterInitialization initialization, EmitterLocalSpace local_space,
                            EmitterLifetime lifetime, EmitterRate rate, EmitterShape shape,
-                           ParticleInitialSpeed particleSpeed, ParticleAppearanceTinting particleColour) {
+                           ParticleInitialSpeed particleSpeed, ParticleAppearanceTinting particleColour, ParticleLifetime particleLifetime) {
         this.emitter_age = 0;
 
         this.emitter_random_1 = Math.random();
@@ -94,6 +96,7 @@ public class ParticleEmitter implements ParticleInterface {
         this.shape = shape;
         this.particleSpeed = particleSpeed;
         this.particleColour = particleColour;
+        this.particleLifetime = particleLifetime;
 
         initialization.initialize(this);
     }
@@ -109,7 +112,7 @@ public class ParticleEmitter implements ParticleInterface {
         boolean canCreateParticle = rate.canEmit(this);
 
         if (canCreateParticle) {
-            Particle particle = new Particle(this);
+            Particle particle = new Particle(this, particleSpeed, particleColour, particleLifetime);
             particles.add(particle);
         }
     }

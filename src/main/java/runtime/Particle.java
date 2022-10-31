@@ -1,9 +1,16 @@
 package runtime;
 
 import net.hollowcube.mql.foreign.Query;
+import particle.ParticleAppearanceTinting;
+import particle.ParticleInitialSpeed;
+import particle.ParticleLifetime;
 
 public class Particle implements ParticleInterface {
     private final ParticleEmitter emitter;
+    private final ParticleInitialSpeed particleSpeed;
+    private final ParticleAppearanceTinting particleColour;
+    private final ParticleLifetime particleLifetime;
+
     int particle_age;
 
     final double particle_random_1;
@@ -66,7 +73,7 @@ public class Particle implements ParticleInterface {
         return emitter.emitter_random_4();
     }
 
-    public Particle(ParticleEmitter emitter) {
+    public Particle(ParticleEmitter emitter, ParticleInitialSpeed particleSpeed, ParticleAppearanceTinting particleColour, ParticleLifetime particleLifetime) {
         this.particle_age = 0;
 
         this.particle_random_1 = Math.random();
@@ -75,6 +82,10 @@ public class Particle implements ParticleInterface {
         this.particle_random_4 = Math.random();
 
         this.emitter = emitter;
+
+        this.particleSpeed = particleSpeed;
+        this.particleColour = particleColour;
+        this.particleLifetime = particleLifetime;
     }
 
     public void tick() {
