@@ -1,6 +1,7 @@
 package emitters.init;
 
 import com.google.gson.JsonElement;
+import runtime.ParticleEmitter;
 import runtime.ParticleEmitterScript;
 
 import java.lang.reflect.InvocationTargetException;
@@ -16,5 +17,13 @@ public record EmitterInitialization(ParticleEmitterScript creationExpression, Pa
         String perUpdateExpression = per_update_expression == null ? null : per_update_expression.getAsString();
 
         return new EmitterInitialization(ParticleEmitterScript.fromString(creationExpression), ParticleEmitterScript.fromString(perUpdateExpression));
+    }
+
+    public void initialize(ParticleEmitter particleEmitter) {
+        if (creationExpression != null) creationExpression.evaluate(particleEmitter);
+    }
+
+    public void update(ParticleEmitter particleEmitter) {
+        if (perUpdateExpression != null) perUpdateExpression.evaluate(particleEmitter);
     }
 }

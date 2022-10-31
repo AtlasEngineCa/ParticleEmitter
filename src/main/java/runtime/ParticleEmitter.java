@@ -5,6 +5,7 @@ import emitters.EmitterRate;
 import emitters.EmitterShape;
 import emitters.init.EmitterInitialization;
 import emitters.init.EmitterLocalSpace;
+import net.hollowcube.mql.foreign.Query;
 import particle.ParticleAppearanceTinting;
 import particle.ParticleInitialSpeed;
 
@@ -30,36 +31,47 @@ public class ParticleEmitter implements ParticleInterface {
     private final ParticleAppearanceTinting particleColour;
     private final ParticleInitialSpeed particleSpeed;
 
+    @Query
     public int particle_count() {
         return particles.size();
     }
+    @Query
     public double emitter_age() {
         return emitter_age;
     }
+    @Query
     public double emitter_random_1() {
         return emitter_random_1;
     }
+    @Query
     public double emitter_random_2() {
         return emitter_random_2;
     }
+    @Query
     public double emitter_random_3() {
         return emitter_random_3;
     }
+    @Query
     public double emitter_random_4() {
         return emitter_random_4;
     }
+    @Query
     public double particle_age() {
         return 0;
     }
+    @Query
     public double particle_random_1() {
         return 0;
     }
+    @Query
     public double particle_random_2() {
         return 0;
     }
+    @Query
     public double particle_random_3() {
         return 0;
     }
+    @Query
     public double particle_random_4() {
         return 0;
     }
@@ -82,10 +94,18 @@ public class ParticleEmitter implements ParticleInterface {
         this.shape = shape;
         this.particleSpeed = particleSpeed;
         this.particleColour = particleColour;
+
+        initialization.initialize(this);
     }
 
     public void tick() {
         emitter_age++;
+        initialization.update(this);
+
+        EmitterLifetime.LifetimeState isActive = lifetime.getState(this);
+        if (isActive == EmitterLifetime.LifetimeState.DEAD || isActive == EmitterLifetime.LifetimeState.INACTIVE)
+            return;
+
         boolean canCreateParticle = rate.canEmit(this);
     }
 
