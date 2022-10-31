@@ -18,6 +18,6 @@ public record EmitterRateInstant(ParticleEmitterScript particleNumber) implement
 
     @Override
     public boolean canEmit(ParticleInterface emitter) {
-        return false;
+        return particleNumber.evaluate(emitter) > emitter.particle_count();
     }
 }

@@ -107,6 +107,11 @@ public class ParticleEmitter implements ParticleInterface {
             return;
 
         boolean canCreateParticle = rate.canEmit(this);
+
+        if (canCreateParticle) {
+            Particle particle = new Particle(this);
+            particles.add(particle);
+        }
     }
 
     @Override
