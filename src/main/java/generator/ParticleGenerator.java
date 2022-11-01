@@ -34,6 +34,6 @@ public class ParticleGenerator {
         writer.writeFloat((float) g);
         writer.writeFloat((float) b);
         writer.writeFloat((float) size);
-        return new ParticlePacket(Particle.DUST.id(), false, x, y, z, 0, 0, 0, 0, 0, writer.toByteArray());
+        return new ParticlePacket(Particle.DUST.id(), false, x, y, z, 0, 0, 0, 0, 10, writer.toByteArray());
     }
 }

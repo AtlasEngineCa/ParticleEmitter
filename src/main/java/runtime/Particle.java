@@ -10,13 +10,13 @@ import particle.ParticleLifetime;
 
 import java.lang.reflect.InvocationTargetException;
 
-public class Particle implements ParticleInterface {
+public class Particle extends ParticleInterface {
     private final ParticleEmitter emitter;
     private final ParticleAppearanceTinting particleColour;
     private final ParticleLifetime particleLifetime;
     private final ParticlePacket packet;
 
-    int particle_age;
+    double particle_age;
 
     final double particle_random_1;
     final double particle_random_2;
@@ -114,6 +114,6 @@ public class Particle implements ParticleInterface {
     }
 
     public void tick() {
-        particle_age++;
+        particle_age += 1 / 1000.0;
     }
 }

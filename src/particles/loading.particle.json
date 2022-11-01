@@ -23,7 +23,7 @@
         "active_time": 1
       },
       "minecraft:emitter_shape_point": {
-        "offset": ["6*-math.sin(variable.emitter_age*360)", "6*math.cos(variable.emitter_age*360)", 0]
+        "offset": ["3*-math.sin(variable.emitter_age*360)", "3*math.cos(variable.emitter_age*360)", 0]
       },
       "minecraft:particle_lifetime_expression": {
         "max_lifetime": 1

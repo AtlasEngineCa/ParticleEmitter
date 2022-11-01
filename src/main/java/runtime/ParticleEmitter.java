@@ -19,10 +19,10 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-public class ParticleEmitter implements ParticleInterface {
+public class ParticleEmitter extends ParticleInterface {
     private Set<Particle> particles = new HashSet<>();
 
-    private int emitter_age;
+    private double emitter_age;
     private final double emitter_random_1;
     private final double emitter_random_2;
     private final double emitter_random_3;
@@ -38,7 +38,7 @@ public class ParticleEmitter implements ParticleInterface {
     private final ParticleAppearanceTinting particleColour;
     private final ParticleInitialSpeed particleSpeed;
     private final ParticleLifetime particleLifetime;
-    private Vec offset;
+    private Vec offset = Vec.ZERO;
 
     @Query
     public int particle_count() {
@@ -113,7 +113,8 @@ public class ParticleEmitter implements ParticleInterface {
     }
 
     public Collection<ParticlePacket> tick() throws InvocationTargetException, NoSuchMethodException, InstantiationException, IllegalAccessException {
-        emitter_age++;
+        emitter_age += 1.0/1000;
+
         initialization.update(this);
         particles.forEach(Particle::tick);
 
@@ -128,7 +129,7 @@ public class ParticleEmitter implements ParticleInterface {
             Vec direction = shape.emitDirection(this);
 
             Particle particle = new Particle(position, direction, this, particleColour, particleLifetime);
-            particles.add(particle);
+            // particles.add(particle);
             return List.of(particle.getPacket());
         }
 
