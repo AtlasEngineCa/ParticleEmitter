@@ -12,6 +12,7 @@ public class Particle implements ParticleInterface {
     private final ParticleEmitter emitter;
     private final ParticleAppearanceTinting particleColour;
     private final ParticleLifetime particleLifetime;
+    private final ParticlePacket packet;
 
     int particle_age;
 
@@ -75,6 +76,10 @@ public class Particle implements ParticleInterface {
         return emitter.emitter_random_4();
     }
 
+    public ParticlePacket getPacket() {
+        return packet;
+    }
+
     public Particle(Vec start, Vec direction, ParticleEmitter emitter, ParticleAppearanceTinting particleColour, ParticleLifetime particleLifetime) {
         this.particle_age = 0;
 
@@ -88,12 +93,12 @@ public class Particle implements ParticleInterface {
         this.particleColour = particleColour;
         this.particleLifetime = particleLifetime;
 
-        draw(start, direction);
+        this.packet = draw(start, direction);
     }
 
-    public void draw(Vec start, Vec direction) {
+    public ParticlePacket draw(Vec start, Vec direction) {
         Colour colour = particleColour.evaluate(this);
-        ParticlePacket particle = ParticleGenerator.buildParticle(net.minestom.server.particle.Particle.DUST,
+        return ParticleGenerator.buildParticle(net.minestom.server.particle.Particle.DUST,
                 start.x(),
                 start.y(),
                 start.z(),

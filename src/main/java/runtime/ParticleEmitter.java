@@ -8,11 +8,14 @@ import emitters.init.EmitterLocalSpace;
 import emitters.shape.EmitterShapeEntityAABB;
 import net.hollowcube.mql.foreign.Query;
 import net.minestom.server.coordinate.Vec;
+import net.minestom.server.network.packet.server.play.ParticlePacket;
 import particle.ParticleAppearanceTinting;
 import particle.ParticleInitialSpeed;
 import particle.ParticleLifetime;
 
+import java.util.Collection;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 public class ParticleEmitter implements ParticleInterface {
@@ -103,14 +106,14 @@ public class ParticleEmitter implements ParticleInterface {
         initialization.initialize(this);
     }
 
-    public void tick() {
+    public Collection<ParticlePacket> tick() {
         emitter_age++;
         initialization.update(this);
         particles.forEach(Particle::tick);
 
         EmitterLifetime.LifetimeState isActive = lifetime.getState(this);
         if (isActive == EmitterLifetime.LifetimeState.DEAD || isActive == EmitterLifetime.LifetimeState.INACTIVE)
-            return;
+            return List.of();
 
         boolean canCreateParticle = rate.canEmit(this);
 
@@ -120,7 +123,10 @@ public class ParticleEmitter implements ParticleInterface {
 
             Particle particle = new Particle(position, direction, this, particleColour, particleLifetime);
             particles.add(particle);
+            return List.of(particle.getPacket());
         }
+
+        return List.of();
     }
 
     @Override
