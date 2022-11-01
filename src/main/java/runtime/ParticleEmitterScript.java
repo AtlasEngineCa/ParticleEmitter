@@ -15,7 +15,7 @@ public interface ParticleEmitterScript {
     static ParticleEmitterScript fromString(String s) throws NoSuchMethodException, InvocationTargetException, InstantiationException, IllegalAccessException {
         if (s == null) return fromDouble(0);
         MqlCompiler<ParticleEmitterScript> compiler = new MqlCompiler<>(ParticleEmitterScript.class);
-        Class<ParticleEmitterScript> scriptClass = compiler.compile(s);
+        Class<ParticleEmitterScript> scriptClass = compiler.compile(s.replace("Math", "math"));
         return scriptClass.getDeclaredConstructor().newInstance();
     }
 }

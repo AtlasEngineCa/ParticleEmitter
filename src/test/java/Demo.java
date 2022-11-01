@@ -22,8 +22,10 @@ import runtime.ParticleEmitter;
 
 import java.io.*;
 import java.lang.reflect.InvocationTargetException;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.List;
 
 public class Demo {
     private final ClassLoader classLoader = getClass().getClassLoader();
@@ -37,11 +39,14 @@ public class Demo {
         InstanceContainer instanceContainer = instanceManager.createInstanceContainer();
         instanceContainer.setGenerator(unit -> unit.modifier().fillHeight(0, 40, Block.STONE));
 
-        File file = new File("./src/particles/magic.particle.json");
-        FileInputStream fis = new FileInputStream(file);
-        JsonReader reader = new JsonReader(new InputStreamReader(fis, "UTF-8"));
-        JsonObject map = GSON.fromJson(reader, JsonObject.class);
-        ParticleEmitter emitter = Parser.parse(map);
+        List<ParticleEmitter> emitters = new ArrayList<>();
+        for (int x = 0; x < 1; ++x) {
+            File file = new File("./src/particles/cool.particle.json");
+            FileInputStream fis = new FileInputStream(file);
+            JsonReader reader = new JsonReader(new InputStreamReader(fis, "UTF-8"));
+            JsonObject map = GSON.fromJson(reader, JsonObject.class);
+            emitters.add(Parser.parse(map));
+        }
 
         // Add an event callback to specify the spawning instance (and the spawn position)
         GlobalEventHandler globalEventHandler = MinecraftServer.getGlobalEventHandler();
@@ -51,20 +56,24 @@ public class Demo {
             player.setGameMode(GameMode.CREATIVE);
             event.setSpawningInstance(instanceContainer);
             player.setRespawnPoint(new Pos(0, 42, 0));
-            emitter.setPosition(new Vec(0, 60, 0));
+            for (ParticleEmitter emitter : emitters) {
+                emitter.setPosition(new Vec(0, 60, 0));
+            }
         });
 
 
         MinecraftServer.getSchedulerManager().scheduleTask(() -> {
             Collection<ParticlePacket> packets = null;
-            try {
-                packets = emitter.tick();
-                packets.forEach(packet -> {
-                    instanceContainer.getPlayers().forEach(p -> p.sendPackets(packet));
-                });
-            } catch (InvocationTargetException | NoSuchMethodException | InstantiationException |
-                     IllegalAccessException e) {
-                throw new RuntimeException(e);
+            for (ParticleEmitter emitter : emitters) {
+                try {
+                    packets = emitter.tick();
+                    packets.forEach(packet -> {
+                        instanceContainer.getPlayers().forEach(p -> p.sendPackets(packet));
+                    });
+                } catch (InvocationTargetException | NoSuchMethodException | InstantiationException |
+                         IllegalAccessException e) {
+                    throw new RuntimeException(e);
+                }
             }
         }, TaskSchedule.immediate(), TaskSchedule.millis(1), ExecutionType.ASYNC);
 
