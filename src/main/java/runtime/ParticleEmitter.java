@@ -13,6 +13,7 @@ import particle.ParticleAppearanceTinting;
 import particle.ParticleInitialSpeed;
 import particle.ParticleLifetime;
 
+import java.lang.reflect.InvocationTargetException;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
@@ -37,6 +38,7 @@ public class ParticleEmitter implements ParticleInterface {
     private final ParticleAppearanceTinting particleColour;
     private final ParticleInitialSpeed particleSpeed;
     private final ParticleLifetime particleLifetime;
+    private Vec offset;
 
     @Query
     public int particle_count() {
@@ -83,6 +85,10 @@ public class ParticleEmitter implements ParticleInterface {
         return 0;
     }
 
+    public void setPosition(Vec offset) {
+        this.offset = offset;
+    }
+
     public ParticleEmitter(EmitterInitialization initialization, EmitterLocalSpace local_space,
                            EmitterLifetime lifetime, EmitterRate rate, EmitterShape shape,
                            ParticleInitialSpeed particleSpeed, ParticleAppearanceTinting particleColour, ParticleLifetime particleLifetime) {
@@ -106,7 +112,7 @@ public class ParticleEmitter implements ParticleInterface {
         initialization.initialize(this);
     }
 
-    public Collection<ParticlePacket> tick() {
+    public Collection<ParticlePacket> tick() throws InvocationTargetException, NoSuchMethodException, InstantiationException, IllegalAccessException {
         emitter_age++;
         initialization.update(this);
         particles.forEach(Particle::tick);
@@ -118,7 +124,7 @@ public class ParticleEmitter implements ParticleInterface {
         boolean canCreateParticle = rate.canEmit(this);
 
         if (canCreateParticle) {
-            Vec position = shape.emitPosition(this);
+            Vec position = shape.emitPosition(this).add(this.offset);
             Vec direction = shape.emitDirection(this);
 
             Particle particle = new Particle(position, direction, this, particleColour, particleLifetime);

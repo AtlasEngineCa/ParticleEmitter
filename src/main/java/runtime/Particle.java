@@ -8,6 +8,8 @@ import net.minestom.server.network.packet.server.play.ParticlePacket;
 import particle.ParticleAppearanceTinting;
 import particle.ParticleLifetime;
 
+import java.lang.reflect.InvocationTargetException;
+
 public class Particle implements ParticleInterface {
     private final ParticleEmitter emitter;
     private final ParticleAppearanceTinting particleColour;
@@ -80,7 +82,7 @@ public class Particle implements ParticleInterface {
         return packet;
     }
 
-    public Particle(Vec start, Vec direction, ParticleEmitter emitter, ParticleAppearanceTinting particleColour, ParticleLifetime particleLifetime) {
+    public Particle(Vec start, Vec direction, ParticleEmitter emitter, ParticleAppearanceTinting particleColour, ParticleLifetime particleLifetime) throws InvocationTargetException, NoSuchMethodException, InstantiationException, IllegalAccessException {
         this.particle_age = 0;
 
         this.particle_random_1 = Math.random();
@@ -96,7 +98,7 @@ public class Particle implements ParticleInterface {
         this.packet = draw(start, direction);
     }
 
-    public ParticlePacket draw(Vec start, Vec direction) {
+    public ParticlePacket draw(Vec start, Vec direction) throws InvocationTargetException, NoSuchMethodException, InstantiationException, IllegalAccessException {
         Colour colour = particleColour.evaluate(this);
         return ParticleGenerator.buildParticle(net.minestom.server.particle.Particle.DUST,
                 start.x(),
@@ -106,9 +108,9 @@ public class Particle implements ParticleInterface {
                 direction.x(),
                 direction.y(),
                 direction.z(),
-                colour.r(),
-                colour.g(),
-                colour.b());
+                colour.r().evaluate(this),
+                colour.g().evaluate(this),
+                colour.b().evaluate(this));
     }
 
     public void tick() {

@@ -70,7 +70,7 @@ public record ParticleAppearanceTinting(Map<Double, Colour> color, ParticleEmitt
         return new ParticleAppearanceTinting(map, interpolant);
     }
 
-    public Colour evaluate(Particle particle) {
+    public Colour evaluate(Particle particle) throws InvocationTargetException, NoSuchMethodException, InstantiationException, IllegalAccessException {
         if (interpolant == null && color.size() == 0) return Colour.white();
         if (interpolant == null) return color.values().iterator().next();
 
@@ -98,14 +98,14 @@ public record ParticleAppearanceTinting(Map<Double, Colour> color, ParticleEmitt
         if (c2 == null) return c1;
 
         double t3 = (t - t1) / (t2 - t1);
-        return interpolateColour(c1, c2, t3);
+        return interpolateColour(c1, c2, t3, particle);
     }
 
-    public static Colour interpolateColour(Colour c1, Colour c2, double t) {
+    public static Colour interpolateColour(Colour c1, Colour c2, double t, Particle particle) throws InvocationTargetException, NoSuchMethodException, InstantiationException, IllegalAccessException {
         return new Colour(
-                (int) (c1.r() * (1 - t) + c2.r() * t),
-                (int) (c1.g() * (1 - t) + c2.g() * t),
-                (int) (c1.b() * (1 - t) + c2.b() * t)
+                (c1.r().evaluate(particle) * (1 - t) + c2.r().evaluate(particle) * t),
+                (c1.g().evaluate(particle) * (1 - t) + c2.g().evaluate(particle) * t),
+                (c1.b().evaluate(particle) * (1 - t) + c2.b().evaluate(particle) * t)
         );
     }
 }

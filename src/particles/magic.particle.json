@@ -48,7 +48,7 @@
 				}
 			},
 			"minecraft:particle_appearance_tinting": {
-				"color": ["Math.clamp(0.3 + variable.particle_random_4/7 + (variable.particle_random_3>0.2 ? 0.4 : 0), 0, 1)", "Math.clamp(0.2+variable.particle_random_4/5, 0, 1)", "Math.clamp(0.88 + variable.particle_random_4/8, 0, 1)", 1]
+				"color": ["math.clamp(0.3 + variable.particle_random_4/7 + (variable.particle_random_3>0.2 ? 0.4 : 0), 0, 1)", "math.clamp(0.2+variable.particle_random_4/5, 0, 1)", "math.clamp(0.88 + variable.particle_random_4/8, 0, 1)", 1]
 			}
 		}
 	}

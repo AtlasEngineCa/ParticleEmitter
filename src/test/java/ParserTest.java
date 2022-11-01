@@ -13,12 +13,11 @@ import java.io.InputStreamReader;
 import java.lang.reflect.InvocationTargetException;
 
 public class ParserTest {
-    private final ClassLoader classLoader = getClass().getClassLoader();
     static final Gson GSON = new GsonBuilder().setPrettyPrinting().disableHtmlEscaping().create();
 
     @Test
     public void parseMagic() throws IOException, InvocationTargetException, NoSuchMethodException, InstantiationException, IllegalAccessException {
-        File file = new File(classLoader.getResource("magic.particle.json").getFile());
+        File file = new File("./src/particles/magic.particle.json");
         FileInputStream fis = new FileInputStream(file);
         JsonReader reader = new JsonReader(new InputStreamReader(fis, "UTF-8"));
         JsonObject map = GSON.fromJson(reader, JsonObject.class);
@@ -27,7 +26,7 @@ public class ParserTest {
 
     @Test
     public void parseLoading() throws IOException, InvocationTargetException, NoSuchMethodException, InstantiationException, IllegalAccessException {
-        File file = new File(classLoader.getResource("loading.particle.json").getFile());
+        File file = new File("./src/particles/loading.particle.json");
         FileInputStream fis = new FileInputStream(file);
         JsonReader reader = new JsonReader(new InputStreamReader(fis, "UTF-8"));
         JsonObject map = GSON.fromJson(reader, JsonObject.class);
