@@ -20,17 +20,14 @@
 			"minecraft:emitter_lifetime_expression": {
 				"activation_expression": 1
 			},
-			"minecraft:emitter_shape_disc": {
+			"minecraft:emitter_shape_point": {
 				"offset": ["math.sin(variable.emitter_age*200)*6", "math.cos(variable.emitter_age*260)*6", 5],
-				"radius": 1.6,
-				"plane_normal": ["math.sin(variable.emitter_age*200)*6", 0, 1],
-				"surface_only": true,
-				"direction": ["math.random(0, 4)", "math.random(0, 8)", "variable.particle_random_3>0.2 ? -10 : -4"]
+				"direction": [0, "math.random(0, 8)", "variable.particle_random_3>0.2 ? -10 : -4"]
 			},
 			"minecraft:particle_lifetime_expression": {
 				"max_lifetime": "math.random(3, 4)"
 			},
-			"minecraft:particle_initial_speed": 10,
+			"minecraft:particle_initial_speed": 0,
 			"minecraft:particle_motion_dynamic": {},
 			"minecraft:particle_appearance_billboard": {
 				"size": ["0.04+variable.particle_random_2/5", "0.04+variable.particle_random_2/5"],

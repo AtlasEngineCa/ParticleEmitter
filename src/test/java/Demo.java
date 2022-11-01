@@ -37,7 +37,7 @@ public class Demo {
         InstanceContainer instanceContainer = instanceManager.createInstanceContainer();
         instanceContainer.setGenerator(unit -> unit.modifier().fillHeight(0, 40, Block.STONE));
 
-        File file = new File("./src/particles/loading.particle.json");
+        File file = new File("./src/particles/magic.particle.json");
         FileInputStream fis = new FileInputStream(file);
         JsonReader reader = new JsonReader(new InputStreamReader(fis, "UTF-8"));
         JsonObject map = GSON.fromJson(reader, JsonObject.class);

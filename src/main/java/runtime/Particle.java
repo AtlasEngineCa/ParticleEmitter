@@ -100,6 +100,7 @@ public class Particle extends ParticleInterface {
 
     public ParticlePacket draw(Vec start, Vec direction) throws InvocationTargetException, NoSuchMethodException, InstantiationException, IllegalAccessException {
         Colour colour = particleColour.evaluate(this);
+
         return ParticleGenerator.buildParticle(net.minestom.server.particle.Particle.DUST,
                 start.x(),
                 start.y(),
@@ -115,5 +116,9 @@ public class Particle extends ParticleInterface {
 
     public void tick() {
         particle_age += 1 / 1000.0;
+    }
+
+    public boolean isAlive() {
+        return particleLifetime.isAlive(this);
     }
 }

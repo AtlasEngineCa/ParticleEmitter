@@ -12,7 +12,7 @@ import java.util.Objects;
 public final class EmitterLifetimeExpression implements EmitterLifetime {
     private final ParticleEmitterScript activeExpression;
     private final ParticleEmitterScript expirationExpression;
-    private boolean expired;
+    private boolean expired = false;
 
     public EmitterLifetimeExpression(ParticleEmitterScript activeExpression, ParticleEmitterScript expirationExpression) {
         this.activeExpression = activeExpression;

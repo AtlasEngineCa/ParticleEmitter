@@ -18,6 +18,7 @@ import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 public class ParticleEmitter extends ParticleInterface {
     private Set<Particle> particles = new HashSet<>();
@@ -116,9 +117,11 @@ public class ParticleEmitter extends ParticleInterface {
         emitter_age += 1.0/1000;
 
         initialization.update(this);
-        particles.forEach(Particle::tick);
+        // particles.forEach(Particle::tick);
+        // particles = particles.stream().filter(particle -> particle.isAlive()).collect(Collectors.toSet());
 
         EmitterLifetime.LifetimeState isActive = lifetime.getState(this);
+
         if (isActive == EmitterLifetime.LifetimeState.DEAD || isActive == EmitterLifetime.LifetimeState.INACTIVE)
             return List.of();
 
@@ -127,6 +130,7 @@ public class ParticleEmitter extends ParticleInterface {
         if (canCreateParticle) {
             Vec position = shape.emitPosition(this).add(this.offset);
             Vec direction = shape.emitDirection(this);
+            if (direction == null) direction = Vec.ZERO;
 
             Particle particle = new Particle(position, direction, this, particleColour, particleLifetime);
             // particles.add(particle);
