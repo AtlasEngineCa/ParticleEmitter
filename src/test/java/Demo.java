@@ -17,9 +17,7 @@ import runtime.ParticleEmitter;
 
 import java.io.*;
 import java.lang.reflect.InvocationTargetException;
-import java.util.ArrayList;
 import java.util.Collection;
-import java.util.List;
 
 public class Demo {
     private final ClassLoader classLoader = getClass().getClassLoader();
@@ -33,8 +31,6 @@ public class Demo {
         InstanceContainer instanceContainer = instanceManager.createInstanceContainer();
         instanceContainer.setGenerator(unit -> unit.modifier().fillHeight(0, 40, Block.STONE));
 
-        List<ParticleEmitter> emitters = new ArrayList<>();
-
         // Add an event callback to specify the spawning instance (and the spawn position)
         GlobalEventHandler globalEventHandler = MinecraftServer.getGlobalEventHandler();
         globalEventHandler.addListener(PlayerLoginEvent.class, event -> {
@@ -42,34 +38,26 @@ public class Demo {
             player.setPermissionLevel(2);
             event.setSpawningInstance(instanceContainer);
             player.setRespawnPoint(new Pos(0, 42, 0));
-
-            File file = new File("./src/particles/loading.particle.json");
-            try {
-                FileInputStream fis = new FileInputStream(file);
-                JsonReader reader = new JsonReader(new InputStreamReader(fis, "UTF-8"));
-                JsonObject map = GSON.fromJson(reader, JsonObject.class);
-                ParticleEmitter emitter = Parser.parse(map);
-                emitters.add(emitter);
-            } catch (FileNotFoundException | InvocationTargetException | NoSuchMethodException |
-                     InstantiationException | IllegalAccessException | UnsupportedEncodingException e) {
-                throw new RuntimeException(e);
-            }
         });
 
-        globalEventHandler.addListener(ServerTickMonitorEvent.class, event -> {
-            for (var emitter : emitters) {
-                Collection<ParticlePacket> packets = null;
-                try {
-                    packets = emitter.tick();
-                } catch (InvocationTargetException | InstantiationException | IllegalAccessException |
-                         NoSuchMethodException e) {
-                    throw new RuntimeException(e);
-                }
+        File file = new File("./src/particles/loading.particle.json");
+        FileInputStream fis = new FileInputStream(file);
+        JsonReader reader = new JsonReader(new InputStreamReader(fis, "UTF-8"));
+        JsonObject map = GSON.fromJson(reader, JsonObject.class);
+        ParticleEmitter emitter = Parser.parse(map);
 
+        globalEventHandler.addListener(ServerTickMonitorEvent.class, event -> {
+            Collection<ParticlePacket> packets = null;
+            try {
+                packets = emitter.tick();
                 packets.forEach(packet -> {
                     instanceContainer.getPlayers().forEach(p -> p.sendPackets(packet));
                 });
+            } catch (InvocationTargetException | NoSuchMethodException | InstantiationException |
+                     IllegalAccessException e) {
+                throw new RuntimeException(e);
             }
+
         });
 
         // Start the server on port 25565
