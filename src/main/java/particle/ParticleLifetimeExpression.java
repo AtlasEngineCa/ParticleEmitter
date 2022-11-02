@@ -2,12 +2,10 @@ package particle;
 
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
-import emitters.EmitterLifetime;
 import runtime.ParticleEmitterScript;
 import runtime.ParticleInterface;
 
 import java.lang.reflect.InvocationTargetException;
-import java.util.Objects;
 
 public final class ParticleLifetimeExpression implements ParticleLifetime {
     private final ParticleEmitterScript expiration_expression;

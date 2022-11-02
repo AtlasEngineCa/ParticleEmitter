@@ -5,7 +5,6 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import emitters.EmitterShape;
 import misc.EmitterDirectionType;
-import net.minestom.server.collision.BoundingBox;
 import net.minestom.server.coordinate.Vec;
 import runtime.ParticleEmitter;
 import runtime.ParticleEmitterScript;

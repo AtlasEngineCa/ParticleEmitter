@@ -22,8 +22,4 @@ public record ParticleInitialSpeed(ParticleEmitterScript speedX, ParticleEmitter
         ParticleEmitterScript speed = ParticleEmitterScript.fromString(particleInitialSpeed.getAsString());
         return new ParticleInitialSpeed(speed, speed, speed);
     }
-
-    public boolean sameSpeed() {
-        return speedX.equals(speedY) && speedY.equals(speedZ);
-    }
 }

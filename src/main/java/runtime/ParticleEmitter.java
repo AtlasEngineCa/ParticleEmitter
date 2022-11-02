@@ -5,7 +5,6 @@ import emitters.EmitterRate;
 import emitters.EmitterShape;
 import emitters.init.EmitterInitialization;
 import emitters.init.EmitterLocalSpace;
-import emitters.shape.EmitterShapeEntityAABB;
 import net.hollowcube.mql.foreign.Query;
 import net.minestom.server.coordinate.Vec;
 import net.minestom.server.network.packet.server.play.ParticlePacket;
@@ -18,7 +17,6 @@ import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-import java.util.stream.Collectors;
 
 public class ParticleEmitter extends ParticleInterface {
     private Set<Particle> particles = new HashSet<>();
