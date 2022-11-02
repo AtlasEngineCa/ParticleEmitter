@@ -79,7 +79,7 @@ ParticleEmitter supports the following features
 
 ## Limitations
 
-Minecraft Query Language (MQL) does not fully support Molang
+[Minecraft Query Language](https://github.com/hollow-cube/common/tree/main/modules/mql) (MQL) does not fully support Molang
 - Variables do not work
 - Functions do not work
 
