@@ -52,7 +52,7 @@ Particle examples can be found [here](https://github.com/WorldSeedGames/Particle
 
 ### Adding as a dependency
 
-Add the following to your `build.gradle` file:
+Add the following to your `build.gradle.kts` file:
 
 ```
 maven {
