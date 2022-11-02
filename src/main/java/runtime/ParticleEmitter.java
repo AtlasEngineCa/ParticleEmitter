@@ -6,6 +6,7 @@ import emitters.EmitterShape;
 import emitters.init.EmitterInitialization;
 import emitters.init.EmitterLocalSpace;
 import net.hollowcube.mql.foreign.Query;
+import net.minestom.server.coordinate.Point;
 import net.minestom.server.coordinate.Vec;
 import net.minestom.server.network.packet.server.play.ParticlePacket;
 import particle.ParticleAppearanceTinting;
@@ -38,7 +39,9 @@ public class ParticleEmitter extends ParticleInterface {
     private final ParticleAppearanceTinting particleColour;
     private final ParticleInitialSpeed particleSpeed;
     private final ParticleLifetime particleLifetime;
-    private Vec offset = Vec.ZERO;
+
+    private Point offset = Vec.ZERO;
+    private float yaw;
 
     @Query
     public int particle_count() {
@@ -85,8 +88,12 @@ public class ParticleEmitter extends ParticleInterface {
         return 0;
     }
 
-    public void setPosition(Vec offset) {
+    public void setPosition(Point offset) {
         this.offset = offset;
+    }
+
+    public void setRotation(float yaw) {
+        this.yaw = yaw;
     }
 
     public ParticleEmitter(int updatesPerSecond, EmitterInitialization initialization, EmitterLocalSpace local_space,
@@ -141,16 +148,21 @@ public class ParticleEmitter extends ParticleInterface {
         boolean canCreateParticle = rate.canEmit(this);
 
         if (canCreateParticle) {
-            Vec position = shape.emitPosition(this).add(this.offset);
-            Vec direction = shape.emitDirection(this);
-            if (direction == null) direction = Vec.ZERO;
+            Vec position = rotateAroundOrigin(yaw, shape.emitPosition(this)).add(this.offset);
+            // Vec direction = shape.emitDirection(this);
+            // if (direction == null) direction = Vec.ZERO;
+            // direction = direction.rotateFromView(yaw, 0);
 
-            Particle particle = new Particle(position, direction, this, particleColour, particleLifetime);
+            Particle particle = new Particle(position, Vec.ZERO, this, particleColour, particleLifetime);
             // particles.add(particle);
             return List.of(particle.getPacket());
         }
 
         return List.of();
+    }
+
+    private Vec rotateAroundOrigin(float yaw, Vec emitPosition) {
+        return emitPosition.rotateAroundY(Math.toRadians(yaw));
     }
 
     @Override
