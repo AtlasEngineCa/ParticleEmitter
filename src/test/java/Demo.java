@@ -37,7 +37,7 @@ public class Demo {
 
         List<ParticleEmitter> emitters = new ArrayList<>();
         for (int x = 0; x < 1; ++x) {
-            File file = new File("./src/particles/disc.particle.json");
+            File file = new File("./src/particles/cool.particle.json");
             FileInputStream fis = new FileInputStream(file);
             JsonReader reader = new JsonReader(new InputStreamReader(fis, "UTF-8"));
             JsonObject map = GSON.fromJson(reader, JsonObject.class);
