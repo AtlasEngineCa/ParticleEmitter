@@ -113,6 +113,12 @@ public class ParticleEmitter extends ParticleInterface {
         initialization.initialize(this);
     }
 
+    public void reset() {
+        emitter_age = 0;
+        particles.clear();
+        initialization.initialize(this);
+    }
+
     public Collection<ParticlePacket> tick() throws InvocationTargetException, NoSuchMethodException, InstantiationException, IllegalAccessException {
         emitter_age += 1.0/2000;
 
@@ -122,8 +128,9 @@ public class ParticleEmitter extends ParticleInterface {
 
         EmitterLifetime.LifetimeState isActive = lifetime.getState(this);
 
-        if (isActive == EmitterLifetime.LifetimeState.DEAD || isActive == EmitterLifetime.LifetimeState.INACTIVE)
+        if (isActive == EmitterLifetime.LifetimeState.DEAD || isActive == EmitterLifetime.LifetimeState.INACTIVE) {
             return List.of();
+        }
 
         boolean canCreateParticle = rate.canEmit(this);
 

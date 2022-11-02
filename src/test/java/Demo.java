@@ -57,7 +57,6 @@ public class Demo {
             }
         });
 
-
         MinecraftServer.getSchedulerManager().scheduleTask(() -> {
             Collection<ParticlePacket> packets = null;
             for (ParticleEmitter emitter : emitters) {

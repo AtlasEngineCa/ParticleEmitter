@@ -33,7 +33,7 @@ public final class EmitterRateSteady implements EmitterRate {
     @Override
     public boolean canEmit(ParticleInterface emitter) {
         if (waitTicks <= 0) {
-            waitTicks = (int) (1000 / spawnRate.evaluate(emitter));
+            waitTicks = (int) (2000 / spawnRate.evaluate(emitter));
             return emitter.particle_count() < maxParticles.evaluate(emitter);
         } else {
             waitTicks--;

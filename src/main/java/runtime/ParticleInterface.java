@@ -25,4 +25,6 @@ public abstract class ParticleInterface {
     abstract public double particle_random_4();
     @Query
     abstract public int particle_count();
+
+    public abstract void reset();
 }

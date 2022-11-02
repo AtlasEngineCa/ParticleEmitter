@@ -53,6 +53,12 @@ public class Particle extends ParticleInterface {
         return emitter.particle_count();
     }
 
+    @Override
+    public void reset() {
+        emitter.reset();
+        particle_age = 0;
+    }
+
     @Query
     public double emitter_age() {
         return emitter.emitter_age();
