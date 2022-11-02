@@ -27,7 +27,7 @@ public record EmitterShapeSphere(ParticleEmitterScript offsetX, ParticleEmitterS
     }
 
     public static EmitterShape parse(JsonObject asJsonObject) throws InvocationTargetException, NoSuchMethodException, InstantiationException, IllegalAccessException {
-        JsonElement offsetEl = asJsonObject.get("offset").getAsJsonArray();
+        JsonElement offsetEl = asJsonObject.get("offset");
         JsonArray offset = offsetEl != null ? offsetEl.getAsJsonArray() : defaultOffset;
 
         JsonElement radiusEl = asJsonObject.get("radius");

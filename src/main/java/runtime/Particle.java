@@ -115,7 +115,7 @@ public class Particle extends ParticleInterface {
     }
 
     public void tick() {
-        particle_age += 1 / 1000.0;
+        particle_age += 1 / 2000.0;
     }
 
     public boolean isAlive() {

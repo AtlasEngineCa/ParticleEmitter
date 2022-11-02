@@ -114,7 +114,7 @@ public class ParticleEmitter extends ParticleInterface {
     }
 
     public Collection<ParticlePacket> tick() throws InvocationTargetException, NoSuchMethodException, InstantiationException, IllegalAccessException {
-        emitter_age += 1.0/1000;
+        emitter_age += 1.0/2000;
 
         initialization.update(this);
         // particles.forEach(Particle::tick);

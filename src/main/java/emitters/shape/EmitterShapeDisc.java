@@ -102,42 +102,45 @@ public record EmitterShapeDisc(EmitterPlaneNormalType planeNormalType,
 
     @Override
     public Vec emitPosition(ParticleEmitter particleEmitter) {
-        double x = 0;
-        double y = 0;
-        double z = 0;
+        double normalX = 0;
+        double normalY = 0;
+        double normalZ = 0;
 
         if (planeNormalType == EmitterPlaneNormalType.CUSTOM) {
-            x = planeX.evaluate(particleEmitter);
-            y = planeY.evaluate(particleEmitter);
-            z = planeZ.evaluate(particleEmitter);
+            normalX = planeX.evaluate(particleEmitter);
+            normalY = planeY.evaluate(particleEmitter);
+            normalZ = planeZ.evaluate(particleEmitter);
         } else {
             switch (planeNormalType) {
-                case X -> x = 1;
-                case Y -> y = 1;
-                case Z -> z = 1;
+                case X -> normalX = 1;
+                case Y -> normalY = 1;
+                case Z -> normalZ = 1;
             }
+        }
+
+        if (normalX == 0 && normalY == 0 && normalZ == 0) {
+            normalY = 1;
         }
 
         double radius = this.radius.evaluate(particleEmitter);
         double angle = Math.random() * 2 * Math.PI;
-        double distance = Math.random() * radius;
 
         double offsetX = this.offsetX.evaluate(particleEmitter);
         double offsetY = this.offsetY.evaluate(particleEmitter);
         double offsetZ = this.offsetZ.evaluate(particleEmitter);
 
-        double x1 = x * distance * Math.cos(angle) + offsetX;
-        double y1 = y * distance * Math.sin(angle) + offsetY;
-        double z1 = z * distance * Math.cos(angle) + offsetZ;
-
-        if (surfaceOnly) {
-            double length = Math.sqrt(x1 * x1 + y1 * y1 + z1 * z1);
-            x1 = x1 / length * radius;
-            y1 = y1 / length * radius;
-            z1 = z1 / length * radius;
+        if (!surfaceOnly) {
+            radius *= Math.random();
         }
 
-        return new Vec(x1, y1, z1);
+        Vec normal = new Vec(normalX, normalY, normalZ);
+        Vec tangent = (normalX == 0 && normalY == 0 ? new Vec(0, -normalZ, normalY) : new Vec(-normalY, normalX, 0)).normalize();
+        Vec w = normal.cross(tangent).normalize();
+
+        double x = Math.cos(angle) * radius;
+        double z = Math.sin(angle) * radius;
+
+        return w.mul(x).add(tangent.mul(z)).add(offsetX, offsetY, offsetZ);
     }
 
     @Override

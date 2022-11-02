@@ -9,12 +9,10 @@ import net.minestom.server.entity.GameMode;
 import net.minestom.server.entity.Player;
 import net.minestom.server.event.GlobalEventHandler;
 import net.minestom.server.event.player.PlayerLoginEvent;
-import net.minestom.server.event.server.ServerTickMonitorEvent;
 import net.minestom.server.instance.InstanceContainer;
 import net.minestom.server.instance.InstanceManager;
 import net.minestom.server.instance.block.Block;
 import net.minestom.server.network.packet.server.play.ParticlePacket;
-import net.minestom.server.particle.ParticleCreator;
 import net.minestom.server.timer.ExecutionType;
 import net.minestom.server.timer.TaskSchedule;
 import runtime.Parser;
@@ -23,12 +21,10 @@ import runtime.ParticleEmitter;
 import java.io.*;
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 
 public class Demo {
-    private final ClassLoader classLoader = getClass().getClassLoader();
     static final Gson GSON = new GsonBuilder().setPrettyPrinting().disableHtmlEscaping().create();
 
     public static void main(String[] args) throws FileNotFoundException, UnsupportedEncodingException, InvocationTargetException, NoSuchMethodException, InstantiationException, IllegalAccessException {
@@ -41,7 +37,7 @@ public class Demo {
 
         List<ParticleEmitter> emitters = new ArrayList<>();
         for (int x = 0; x < 1; ++x) {
-            File file = new File("./src/particles/cool.particle.json");
+            File file = new File("./src/particles/disc.particle.json");
             FileInputStream fis = new FileInputStream(file);
             JsonReader reader = new JsonReader(new InputStreamReader(fis, "UTF-8"));
             JsonObject map = GSON.fromJson(reader, JsonObject.class);
@@ -66,10 +62,12 @@ public class Demo {
             Collection<ParticlePacket> packets = null;
             for (ParticleEmitter emitter : emitters) {
                 try {
-                    packets = emitter.tick();
-                    packets.forEach(packet -> {
-                        instanceContainer.getPlayers().forEach(p -> p.sendPackets(packet));
-                    });
+                    for (int i = 0; i <= 1; ++i) {
+                        packets = emitter.tick();
+                        packets.forEach(packet -> {
+                            instanceContainer.getPlayers().forEach(p -> p.sendPackets(packet));
+                        });
+                    }
                 } catch (InvocationTargetException | NoSuchMethodException | InstantiationException |
                          IllegalAccessException e) {
                     throw new RuntimeException(e);
