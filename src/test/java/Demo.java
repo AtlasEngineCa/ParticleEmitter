@@ -41,7 +41,7 @@ public class Demo {
             FileInputStream fis = new FileInputStream(file);
             JsonReader reader = new JsonReader(new InputStreamReader(fis, "UTF-8"));
             JsonObject map = GSON.fromJson(reader, JsonObject.class);
-            emitters.add(Parser.parse(map));
+            emitters.add(Parser.parse(2000, map));
         }
 
         // Add an event callback to specify the spawning instance (and the spawn position)

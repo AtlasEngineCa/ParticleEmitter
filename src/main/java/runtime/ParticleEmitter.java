@@ -20,6 +20,7 @@ import java.util.Set;
 
 public class ParticleEmitter extends ParticleInterface {
     private Set<Particle> particles = new HashSet<>();
+    private final int updatesPerSecond;
 
     private double emitter_age;
     private final double emitter_random_1;
@@ -88,7 +89,7 @@ public class ParticleEmitter extends ParticleInterface {
         this.offset = offset;
     }
 
-    public ParticleEmitter(EmitterInitialization initialization, EmitterLocalSpace local_space,
+    public ParticleEmitter(int updatesPerSecond, EmitterInitialization initialization, EmitterLocalSpace local_space,
                            EmitterLifetime lifetime, EmitterRate rate, EmitterShape shape,
                            ParticleInitialSpeed particleSpeed, ParticleAppearanceTinting particleColour, ParticleLifetime particleLifetime) {
         this.emitter_age = 0;
@@ -108,6 +109,8 @@ public class ParticleEmitter extends ParticleInterface {
         this.particleColour = particleColour;
         this.particleLifetime = particleLifetime;
 
+        this.updatesPerSecond = updatesPerSecond;
+
         initialization.initialize(this);
     }
 
@@ -117,8 +120,13 @@ public class ParticleEmitter extends ParticleInterface {
         initialization.initialize(this);
     }
 
+    @Override
+    public int updatesPerSecond() {
+        return updatesPerSecond;
+    }
+
     public Collection<ParticlePacket> tick() throws InvocationTargetException, NoSuchMethodException, InstantiationException, IllegalAccessException {
-        emitter_age += 1.0/2000;
+        emitter_age += 1.0/updatesPerSecond;
 
         initialization.update(this);
         // particles.forEach(Particle::tick);

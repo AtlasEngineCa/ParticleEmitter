@@ -22,7 +22,7 @@ public class ParserTest {
         FileInputStream fis = new FileInputStream(file);
         JsonReader reader = new JsonReader(new InputStreamReader(fis, "UTF-8"));
         JsonObject map = GSON.fromJson(reader, JsonObject.class);
-        ParticleEmitter emitter = Parser.parse(map);
+        ParticleEmitter emitter = Parser.parse(1000, map);
     }
 
     @Test
@@ -31,6 +31,6 @@ public class ParserTest {
         FileInputStream fis = new FileInputStream(file);
         JsonReader reader = new JsonReader(new InputStreamReader(fis, "UTF-8"));
         JsonObject map = GSON.fromJson(reader, JsonObject.class);
-        ParticleEmitter emitter = Parser.parse(map);
+        ParticleEmitter emitter = Parser.parse(1000, map);
     }
 }

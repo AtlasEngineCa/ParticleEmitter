@@ -20,7 +20,7 @@ import particle.ParticleLifetimeExpression;
 import java.lang.reflect.InvocationTargetException;
 
 public class Parser {
-    public static ParticleEmitter parse(JsonObject description) throws InvocationTargetException, NoSuchMethodException, InstantiationException, IllegalAccessException {
+    public static ParticleEmitter parse(int updatesPerSecond, JsonObject description) throws InvocationTargetException, NoSuchMethodException, InstantiationException, IllegalAccessException {
         String version = description.get("format_version").getAsString();
         JsonObject particleEffect = description.get("particle_effect").getAsJsonObject();
         JsonObject components = particleEffect.get("components").getAsJsonObject();
@@ -84,6 +84,7 @@ public class Parser {
         JsonObject particleLifetimeExpression = components.get("minecraft:particle_lifetime_expression").getAsJsonObject();
 
         return new ParticleEmitter(
+                updatesPerSecond,
                 EmitterInitialization.parse(emitterInitialization),
                 EmitterLocalSpace.parse(emitterLocalSpace),
                 lifetime, rate, shape,

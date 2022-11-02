@@ -59,6 +59,11 @@ public class Particle extends ParticleInterface {
         particle_age = 0;
     }
 
+    @Override
+    public int updatesPerSecond() {
+        return emitter.updatesPerSecond();
+    }
+
     @Query
     public double emitter_age() {
         return emitter.emitter_age();
@@ -121,7 +126,7 @@ public class Particle extends ParticleInterface {
     }
 
     public void tick() {
-        particle_age += 1 / 2000.0;
+        particle_age += 1.0 / updatesPerSecond();
     }
 
     public boolean isAlive() {

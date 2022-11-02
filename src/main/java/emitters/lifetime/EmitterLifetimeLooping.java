@@ -35,11 +35,11 @@ public final class EmitterLifetimeLooping implements EmitterLifetime {
     public LifetimeState getState(ParticleInterface i) {
         if (waitTicks <= 0) {
             if (active) {
-                waitTicks = (int) (2000 * sleepTime.evaluate(i));
+                waitTicks = (int) (i.updatesPerSecond() * sleepTime.evaluate(i));
                 active = false;
                 return LifetimeState.INACTIVE;
             } else {
-                waitTicks = (int) (2000 * activeTime.evaluate(i));
+                waitTicks = (int) (i.updatesPerSecond() * activeTime.evaluate(i));
                 active = true;
                 i.reset();
                 return LifetimeState.ALIVE;

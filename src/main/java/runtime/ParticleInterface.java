@@ -27,4 +27,5 @@ public abstract class ParticleInterface {
     abstract public int particle_count();
 
     public abstract void reset();
+    public abstract int updatesPerSecond();
 }

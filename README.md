@@ -37,8 +37,6 @@
   </a>
   </div>
 
-This is a library that allows users use blockbench particle files in **Vanilla Minecraft**!
-
 With this library, you can design particle animations with [snowstorm](https://snowstorm.app/) and draw them in a Minecraft world.
 
 Currently only [Minestom](https://github.com/Minestom/Minestom) is supported.
