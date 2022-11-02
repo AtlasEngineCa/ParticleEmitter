@@ -44,7 +44,7 @@ Currently only [Minestom](https://github.com/Minestom/Minestom) is supported.
 <!-- GETTING STARTED -->
 ## Getting Started
 
-A full, runnable example server can be found in [here](https://github.com/WorldSeedGames/ParticleEmitter/tree/master/src/test/java)
+A full, runnable example server can be found in [here](https://github.com/WorldSeedGames/ParticleEmitter/blob/master/src/test/java/Demo.java)
 
 Particle examples can be found [here](https://github.com/WorldSeedGames/ParticleEmitter/tree/master/src/test/resources/particles)
 
