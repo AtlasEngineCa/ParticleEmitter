@@ -22,7 +22,6 @@
   </a>
 
 <h3 align="center">ParticleEmitter</h3>
-
   <p align="center">
     <a href="https://github.com/WorldSeedGames/ParticleEmitter/issues">Report Bug</a>
     ·
@@ -50,6 +49,25 @@ Currently only [Minestom](https://github.com/Minestom/Minestom) is supported.
 A full, runnable example server can be found in [here](https://github.com/WorldSeedGames/ParticleEmitter/tree/master/src/test/java)
 
 Particle examples can be found [here](https://github.com/WorldSeedGames/ParticleEmitter/tree/master/src/test/resources/particles)
+
+### Adding as a dependency
+
+Add the following to your `build.gradle` file:
+
+```
+maven {
+    url = uri("https://reposilite.worldseed.online/public")
+}
+```
+
+Add the library as a dependency
+```
+dependencies {
+    implementation("net.worldseed.particleeffects:ParticleEffects:<version>")
+}
+```
+
+The lastest version number can be found [here](https://reposilite.worldseed.online/#/public/net/worldseed/particleeffects/ParticleEffects)
 
 ## Features
 

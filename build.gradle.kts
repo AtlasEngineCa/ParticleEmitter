@@ -30,7 +30,7 @@ publishing {
     publications.create<MavenPublication>("maven") {
         groupId = "net.worldseed.particleeffects"
         artifactId = "ParticleEffects"
-        version = "1.1"
+        version = "1.2"
 
         from(components["java"])
     }
@@ -38,7 +38,7 @@ publishing {
     repositories {
         maven {
             name = "WorldSeed"
-            url = uri("https://reposilite.worldseed.online/releases")
+            url = uri("https://reposilite.worldseed.online/public")
             credentials(PasswordCredentials::class)
             authentication {
                 create<BasicAuthentication>("basic")
