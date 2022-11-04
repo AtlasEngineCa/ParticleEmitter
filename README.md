@@ -54,9 +54,7 @@ Add the following to your `build.gradle.kts` file:
 
 ```
 repositories {
-  maven {
-    url = uri("https://reposilite.worldseed.online/public")
-  }
+  maven("https://reposilite.worldseed.online/public")
 }
 ```
 
