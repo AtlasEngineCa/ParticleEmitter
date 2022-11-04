@@ -53,8 +53,10 @@ Particle examples can be found [here](https://github.com/WorldSeedGames/Particle
 Add the following to your `build.gradle.kts` file:
 
 ```
-maven {
-    url = uri("https://reposilite.worldseed.online/public")
+repositories {
+    maven {
+        url = uri("https://repo.maven.apache.org/maven2/")
+    }
 }
 ```
 
