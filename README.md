@@ -67,6 +67,10 @@ dependencies {
 
 The lastest version number can be found [here](https://reposilite.worldseed.online/#/public/net/worldseed/particleeffects/ParticleEffects)
 
+### JAVA FLAGS
+
+To execute the code you must add the java VM flag `--add-opens java.base/java.lang=ALL-UNNAMED`.
+
 ## Features
 
 ParticleEmitter supports the following features
