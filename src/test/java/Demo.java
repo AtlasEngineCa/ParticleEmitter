@@ -2,6 +2,7 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonObject;
 import com.google.gson.stream.JsonReader;
+import emitters.EmitterLifetime;
 import net.minestom.server.MinecraftServer;
 import net.minestom.server.coordinate.Pos;
 import net.minestom.server.coordinate.Vec;
@@ -9,14 +10,13 @@ import net.minestom.server.entity.GameMode;
 import net.minestom.server.entity.Player;
 import net.minestom.server.event.GlobalEventHandler;
 import net.minestom.server.event.player.PlayerLoginEvent;
-import net.minestom.server.event.player.PlayerMoveEvent;
 import net.minestom.server.instance.InstanceContainer;
 import net.minestom.server.instance.InstanceManager;
 import net.minestom.server.instance.block.Block;
 import net.minestom.server.network.packet.server.play.ParticlePacket;
 import net.minestom.server.timer.ExecutionType;
 import net.minestom.server.timer.TaskSchedule;
-import runtime.Parser;
+import runtime.ParticleParser;
 
 import java.io.*;
 import java.lang.reflect.InvocationTargetException;
@@ -37,7 +37,7 @@ public class Demo {
         FileInputStream fis = new FileInputStream(file);
         JsonReader reader = new JsonReader(new InputStreamReader(fis, "UTF-8"));
         JsonObject map = GSON.fromJson(reader, JsonObject.class);
-        var emitter = Parser.parse(1000, map);
+        var emitter = ParticleParser.parse(1000, map);
 
         // Add an event callback to specify the spawning instance (and the spawn position)
         GlobalEventHandler globalEventHandler = MinecraftServer.getGlobalEventHandler();
@@ -56,11 +56,10 @@ public class Demo {
         // });
 
         MinecraftServer.getSchedulerManager().scheduleTask(() -> {
-            Collection<ParticlePacket> packets = null;
             try {
-                packets = emitter.tick();
+                Collection<ParticlePacket> packets = emitter.tick();
 
-                if (packets != null) {
+                if (emitter.status() != EmitterLifetime.LifetimeState.DEAD) {
                     packets.forEach(packet -> {
                         instanceContainer.getPlayers().forEach(p -> p.sendPackets(packet));
                     });

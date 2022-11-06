@@ -3,7 +3,7 @@ import com.google.gson.GsonBuilder;
 import com.google.gson.JsonObject;
 import com.google.gson.stream.JsonReader;
 import org.junit.jupiter.api.Test;
-import runtime.Parser;
+import runtime.ParticleParser;
 import runtime.ParticleEmitter;
 
 import java.io.File;
@@ -12,7 +12,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.lang.reflect.InvocationTargetException;
 
-public class ParserTest {
+public class ParticleParserTest {
     static final Gson GSON = new GsonBuilder().setPrettyPrinting().disableHtmlEscaping().create();
     static final String root = "./src/test/resources/particles/";
 
@@ -22,7 +22,7 @@ public class ParserTest {
         FileInputStream fis = new FileInputStream(file);
         JsonReader reader = new JsonReader(new InputStreamReader(fis, "UTF-8"));
         JsonObject map = GSON.fromJson(reader, JsonObject.class);
-        ParticleEmitter emitter = Parser.parse(1000, map);
+        ParticleEmitter emitter = ParticleParser.parse(1000, map);
     }
 
     @Test
@@ -31,6 +31,6 @@ public class ParserTest {
         FileInputStream fis = new FileInputStream(file);
         JsonReader reader = new JsonReader(new InputStreamReader(fis, "UTF-8"));
         JsonObject map = GSON.fromJson(reader, JsonObject.class);
-        ParticleEmitter emitter = Parser.parse(1000, map);
+        ParticleEmitter emitter = ParticleParser.parse(1000, map);
     }
 }

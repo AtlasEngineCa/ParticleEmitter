@@ -9,6 +9,7 @@ import net.hollowcube.mql.foreign.Query;
 import net.minestom.server.coordinate.Point;
 import net.minestom.server.coordinate.Vec;
 import net.minestom.server.network.packet.server.play.ParticlePacket;
+import org.jetbrains.annotations.NotNull;
 import particle.ParticleAppearanceTinting;
 import particle.ParticleInitialSpeed;
 import particle.ParticleLifetime;
@@ -39,6 +40,8 @@ public class ParticleEmitter extends ParticleInterface {
     private final ParticleAppearanceTinting particleColour;
     private final ParticleInitialSpeed particleSpeed;
     private final ParticleLifetime particleLifetime;
+
+    private EmitterLifetime.LifetimeState state = EmitterLifetime.LifetimeState.ALIVE;
 
     private Point offset = Vec.ZERO;
     private float yaw;
@@ -132,18 +135,15 @@ public class ParticleEmitter extends ParticleInterface {
         return updatesPerSecond;
     }
 
-    public Collection<ParticlePacket> tick() throws InvocationTargetException, NoSuchMethodException, InstantiationException, IllegalAccessException {
+    public @NotNull Collection<ParticlePacket> tick() throws InvocationTargetException, NoSuchMethodException, InstantiationException, IllegalAccessException {
         emitter_age += 1.0/updatesPerSecond;
 
         initialization.update(this);
         // particles.forEach(Particle::tick);
         // particles = particles.stream().filter(particle -> particle.isAlive()).collect(Collectors.toSet());
 
-        EmitterLifetime.LifetimeState isActive = lifetime.getState(this);
-
-        if (isActive == EmitterLifetime.LifetimeState.DEAD) {
-            return null;
-        } else if (isActive == EmitterLifetime.LifetimeState.INACTIVE) {
+        this.state = lifetime.getState(this);
+        if (state == EmitterLifetime.LifetimeState.DEAD || state == EmitterLifetime.LifetimeState.INACTIVE) {
             return List.of();
         }
 
@@ -183,5 +183,9 @@ public class ParticleEmitter extends ParticleInterface {
                 ", particleColour=" + particleColour +
                 ", particleSpeed=" + particleSpeed +
                 '}';
+    }
+
+    public EmitterLifetime.LifetimeState status() {
+        return state;
     }
 }

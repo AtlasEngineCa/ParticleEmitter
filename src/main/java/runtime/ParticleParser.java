@@ -19,7 +19,7 @@ import particle.ParticleLifetimeExpression;
 
 import java.lang.reflect.InvocationTargetException;
 
-public class Parser {
+public class ParticleParser {
     public static ParticleEmitter parse(int updatesPerSecond, JsonObject description) throws InvocationTargetException, NoSuchMethodException, InstantiationException, IllegalAccessException {
         String version = description.get("format_version").getAsString();
         JsonObject particleEffect = description.get("particle_effect").getAsJsonObject();
