@@ -19,6 +19,7 @@ public record EmitterLifetimeOnce(ParticleEmitterScript activeTime) implements E
 
     @Override
     public LifetimeState getState(ParticleInterface i) {
-        return null;
+        if (activeTime.evaluate(i) < i.emitter_age()) return LifetimeState.DEAD;
+        return LifetimeState.ALIVE;
     }
 }

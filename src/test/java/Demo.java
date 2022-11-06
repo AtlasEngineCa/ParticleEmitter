@@ -59,9 +59,14 @@ public class Demo {
             Collection<ParticlePacket> packets = null;
             try {
                 packets = emitter.tick();
-                packets.forEach(packet -> {
-                    instanceContainer.getPlayers().forEach(p -> p.sendPackets(packet));
-                });
+
+                if (packets != null) {
+                    packets.forEach(packet -> {
+                        instanceContainer.getPlayers().forEach(p -> p.sendPackets(packet));
+                    });
+                } else {
+                    emitter.reset();
+                }
             } catch (InvocationTargetException | NoSuchMethodException | InstantiationException |
                      IllegalAccessException e) {
                 throw new RuntimeException(e);

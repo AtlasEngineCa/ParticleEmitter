@@ -141,7 +141,9 @@ public class ParticleEmitter extends ParticleInterface {
 
         EmitterLifetime.LifetimeState isActive = lifetime.getState(this);
 
-        if (isActive == EmitterLifetime.LifetimeState.DEAD || isActive == EmitterLifetime.LifetimeState.INACTIVE) {
+        if (isActive == EmitterLifetime.LifetimeState.DEAD) {
+            return null;
+        } else if (isActive == EmitterLifetime.LifetimeState.INACTIVE) {
             return List.of();
         }
 

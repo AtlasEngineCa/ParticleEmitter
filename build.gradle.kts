@@ -30,7 +30,7 @@ publishing {
     publications.create<MavenPublication>("maven") {
         groupId = "net.worldseed.particleeffects"
         artifactId = "ParticleEffects"
-        version = "1.2"
+        version = "1.3.6"
 
         from(components["java"])
     }
@@ -50,7 +50,7 @@ publishing {
 dependencies {
     testImplementation("org.junit.jupiter:junit-jupiter-api:5.8.1")
     testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:5.8.1")
-    implementation("com.github.Minestom:Minestom:5f8842084c")
+    implementation("com.github.Minestom:Minestom:42195c5")
     implementation("com.github.hollow-cube.common:mql:117d7c64b1")
 }
 
