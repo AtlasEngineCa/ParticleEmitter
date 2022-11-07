@@ -2,7 +2,7 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonObject;
 import com.google.gson.stream.JsonReader;
-import emitters.EmitterLifetime;
+import net.worldseed.emitters.EmitterLifetime;
 import net.minestom.server.MinecraftServer;
 import net.minestom.server.coordinate.Pos;
 import net.minestom.server.coordinate.Vec;
@@ -16,7 +16,7 @@ import net.minestom.server.instance.block.Block;
 import net.minestom.server.network.packet.server.play.ParticlePacket;
 import net.minestom.server.timer.ExecutionType;
 import net.minestom.server.timer.TaskSchedule;
-import runtime.ParticleParser;
+import net.worldseed.runtime.ParticleParser;
 
 import java.io.*;
 import java.lang.reflect.InvocationTargetException;

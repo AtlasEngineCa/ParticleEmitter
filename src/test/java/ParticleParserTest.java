@@ -3,8 +3,8 @@ import com.google.gson.GsonBuilder;
 import com.google.gson.JsonObject;
 import com.google.gson.stream.JsonReader;
 import org.junit.jupiter.api.Test;
-import runtime.ParticleParser;
-import runtime.ParticleEmitter;
+import net.worldseed.runtime.ParticleParser;
+import net.worldseed.runtime.ParticleEmitter;
 
 import java.io.File;
 import java.io.FileInputStream;
