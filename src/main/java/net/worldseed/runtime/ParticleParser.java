@@ -20,6 +20,16 @@ import net.worldseed.particle.ParticleLifetimeExpression;
 import java.lang.reflect.InvocationTargetException;
 
 public class ParticleParser {
+    /**
+     * Parses a particle emitter from a JSON object.
+     * @param updatesPerSecond The number of times per second you will call the tick function.
+     * @param description The JSON object describing the particle emitter.
+     * @return The particle emitter.
+     * @throws InvocationTargetException
+     * @throws NoSuchMethodException
+     * @throws InstantiationException
+     * @throws IllegalAccessException
+     */
     public static ParticleEmitter parse(int updatesPerSecond, JsonObject description) throws InvocationTargetException, NoSuchMethodException, InstantiationException, IllegalAccessException {
         String version = description.get("format_version").getAsString();
         JsonObject particleEffect = description.get("particle_effect").getAsJsonObject();

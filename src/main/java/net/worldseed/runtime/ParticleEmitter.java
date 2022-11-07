@@ -99,7 +99,7 @@ public class ParticleEmitter extends ParticleInterface {
         this.yaw = yaw;
     }
 
-    public ParticleEmitter(int updatesPerSecond, EmitterInitialization initialization, EmitterLocalSpace local_space,
+    ParticleEmitter(int updatesPerSecond, EmitterInitialization initialization, EmitterLocalSpace local_space,
                            EmitterLifetime lifetime, EmitterRate rate, EmitterShape shape,
                            ParticleInitialSpeed particleSpeed, ParticleAppearanceTinting particleColour, ParticleLifetime particleLifetime) {
         this.emitter_age = 0;
