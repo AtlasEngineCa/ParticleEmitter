@@ -12,7 +12,6 @@ import net.worldseed.emitters.lifetime.EmitterLifetimeLooping;
 import net.worldseed.emitters.lifetime.EmitterLifetimeOnce;
 import net.worldseed.emitters.rate.EmitterRateInstant;
 import net.worldseed.emitters.rate.EmitterRateSteady;
-import emitters.shape.*;
 import net.worldseed.emitters.shape.*;
 import net.worldseed.particle.ParticleAppearanceTinting;
 import net.worldseed.particle.ParticleInitialSpeed;
