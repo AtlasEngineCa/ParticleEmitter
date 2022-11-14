@@ -25,10 +25,10 @@ public class ParticleEmitter extends ParticleInterface {
     private final int updatesPerSecond;
 
     private double emitter_age;
-    private final double emitter_random_1;
-    private final double emitter_random_2;
-    private final double emitter_random_3;
-    private final double emitter_random_4;
+    private double emitter_random_1;
+    private double emitter_random_2;
+    private double emitter_random_3;
+    private double emitter_random_4;
 
     private final EmitterLocalSpace local_space;
     private final EmitterInitialization initialization;
@@ -128,6 +128,11 @@ public class ParticleEmitter extends ParticleInterface {
         emitter_age = 0;
         particles.clear();
         initialization.initialize(this);
+
+        emitter_random_1 = Math.random();
+        emitter_random_2 = Math.random();
+        emitter_random_3 = Math.random();
+        emitter_random_4 = Math.random();
     }
 
     @Override
