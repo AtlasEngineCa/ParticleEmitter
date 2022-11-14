@@ -1,10 +1,8 @@
 package net.worldseed.runtime;
 
 import net.minestom.server.coordinate.Point;
-import net.minestom.server.coordinate.Pos;
 import net.worldseed.emitters.EmitterShape;
 import net.worldseed.generator.ParticleGenerator;
-import net.worldseed.misc.Colour;
 import net.hollowcube.mql.foreign.Query;
 import net.minestom.server.coordinate.Vec;
 import net.minestom.server.network.packet.server.play.ParticlePacket;
@@ -12,6 +10,7 @@ import net.worldseed.particle.ParticleAppearanceTinting;
 import net.worldseed.particle.ParticleLifetime;
 
 import java.lang.reflect.InvocationTargetException;
+import java.util.concurrent.ThreadLocalRandom;
 
 public class Particle extends ParticleInterface {
     private final ParticleEmitter emitter;
@@ -26,6 +25,8 @@ public class Particle extends ParticleInterface {
     final double particle_random_2;
     final double particle_random_3;
     final double particle_random_4;
+
+    private double emitter_age_offset = 0;
 
     @Query
     public double particle_age() {
@@ -70,7 +71,7 @@ public class Particle extends ParticleInterface {
 
     @Query
     public double emitter_age() {
-        return emitter.emitter_age();
+        return emitter.emitter_age() + emitter_age_offset;
     }
 
     @Query
@@ -124,20 +125,49 @@ public class Particle extends ParticleInterface {
     }
 
     public ParticlePacket draw(Vec start, Vec direction) throws InvocationTargetException, NoSuchMethodException, InstantiationException, IllegalAccessException {
-        Colour colour = particleColour.evaluate(this);
+        ParticleAppearanceTinting.ColourEvaluated colour = particleColour.evaluate(this);
 
-        return ParticleGenerator.buildParticle(
-                type,
-                start.x(),
-                start.y(),
-                start.z(),
-                1,
-                direction.x(),
-                direction.y(),
-                direction.z(),
-                colour.r().evaluate(this),
-                colour.g().evaluate(this),
-                colour.b().evaluate(this));
+        if (type == net.minestom.server.particle.Particle.DUST_COLOR_TRANSITION) {
+            int var17 = (int)(8.0D / (ThreadLocalRandom.current().nextDouble() * 0.8D + 0.2D));
+            double lifetimeSeconds = ((int)Math.max((float)var17, 1.0F)) * 1.0 / 20;
+
+            double currentAge = this.particle_age;
+            this.particle_age += lifetimeSeconds;
+            this.emitter_age_offset = lifetimeSeconds;
+            ParticleAppearanceTinting.ColourEvaluated colourAfter = particleColour.evaluate(this);
+            this.particle_age = currentAge;
+            this.emitter_age_offset = 0;
+
+            return ParticleGenerator.buildParticle(
+                    type,
+                    start.x(),
+                    start.y(),
+                    start.z(),
+                    1,
+                    direction.x(),
+                    direction.y(),
+                    direction.z(),
+                    colour.r(),
+                    colour.g(),
+                    colour.b(),
+                    colourAfter.r(),
+                    colourAfter.g(),
+                    colourAfter.b()
+            );
+        } else {
+            return ParticleGenerator.buildParticle(
+                    type,
+                    start.x(),
+                    start.y(),
+                    start.z(),
+                    1,
+                    direction.x(),
+                    direction.y(),
+                    direction.z(),
+                    colour.r(),
+                    colour.g(),
+                    colour.b());
+        }
     }
 
     public void tick() {

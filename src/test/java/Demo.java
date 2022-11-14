@@ -45,7 +45,7 @@ public class Demo {
         List<ParticleEmitter> emitters = new ArrayList<>();
 
         {
-            var emitter = ParticleParser.parse(Particle.DUST, 1000, map);
+            var emitter = ParticleParser.parse(Particle.DUST_COLOR_TRANSITION, 1000, map);
             emitters.add(emitter);
         }
 

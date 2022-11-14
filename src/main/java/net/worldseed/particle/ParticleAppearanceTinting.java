@@ -61,13 +61,12 @@ public record ParticleAppearanceTinting(Map<Double, Colour> color, ParticleEmitt
         return new ParticleAppearanceTinting(map, interpolant);
     }
 
-    public Colour evaluate(Particle particle) throws InvocationTargetException, NoSuchMethodException, InstantiationException, IllegalAccessException {
-        if (interpolant == null && color.size() == 0) return Colour.white();
-        if (interpolant == null) return color.values().iterator().next();
+    public ColourEvaluated evaluate(Particle particle) throws InvocationTargetException, NoSuchMethodException, InstantiationException, IllegalAccessException {
+        if (interpolant == null && color.size() == 0) return ColourEvaluated.white();
+        if (interpolant == null) return color.values().iterator().next().toColourEvaluated(particle);
 
         double t = interpolant.evaluate(particle);
-
-        if (color.size() == 1) return color.values().iterator().next();
+        if (color.size() == 1) return color.values().iterator().next().toColourEvaluated(particle);
 
         Colour c1 = null;
         Colour c2 = null;
@@ -85,15 +84,21 @@ public record ParticleAppearanceTinting(Map<Double, Colour> color, ParticleEmitt
             }
         }
 
-        if (c1 == null) return c2;
-        if (c2 == null) return c1;
+        if (c1 == null) return c2.toColourEvaluated(particle);
+        if (c2 == null) return c1.toColourEvaluated(particle);
 
         double t3 = (t - t1) / (t2 - t1);
         return interpolateColour(c1, c2, t3, particle);
     }
 
-    public static Colour interpolateColour(Colour c1, Colour c2, double t, Particle particle) throws InvocationTargetException, NoSuchMethodException, InstantiationException, IllegalAccessException {
-        return new Colour(
+    public record ColourEvaluated(double r, double g, double b) {
+        public static ColourEvaluated white() {
+            return new ColourEvaluated(1, 1, 1);
+        }
+    }
+
+    public static ColourEvaluated interpolateColour(Colour c1, Colour c2, double t, Particle particle) throws InvocationTargetException, NoSuchMethodException, InstantiationException, IllegalAccessException {
+        return new ColourEvaluated(
                 (c1.r().evaluate(particle) * (1 - t) + c2.r().evaluate(particle) * t),
                 (c1.g().evaluate(particle) * (1 - t) + c2.g().evaluate(particle) * t),
                 (c1.b().evaluate(particle) * (1 - t) + c2.b().evaluate(particle) * t)

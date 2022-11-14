@@ -1,7 +1,10 @@
 package net.worldseed.misc;
 
 import com.google.gson.JsonElement;
+import net.minestom.server.particle.Particle;
+import net.worldseed.particle.ParticleAppearanceTinting;
 import net.worldseed.runtime.ParticleEmitterScript;
+import net.worldseed.runtime.ParticleInterface;
 
 import java.awt.*;
 import java.lang.reflect.InvocationTargetException;
@@ -11,12 +14,12 @@ public record Colour(ParticleEmitterScript r, ParticleEmitterScript g, ParticleE
         this(ParticleEmitterScript.fromString(r), ParticleEmitterScript.fromString(g), ParticleEmitterScript.fromString(b));
     }
 
-    public Colour(double v, double v1, double v2) throws InvocationTargetException, NoSuchMethodException, InstantiationException, IllegalAccessException {
-        this(ParticleEmitterScript.fromDouble(v), ParticleEmitterScript.fromDouble(v1), ParticleEmitterScript.fromDouble(v2));
+    public ParticleAppearanceTinting.ColourEvaluated toColourEvaluated(ParticleInterface particle) {
+        return new ParticleAppearanceTinting.ColourEvaluated(r.evaluate(particle), g.evaluate(particle), b.evaluate(particle));
     }
 
-    public static Colour white() throws InvocationTargetException, NoSuchMethodException, InstantiationException, IllegalAccessException {
-        return new Colour(ParticleEmitterScript.fromDouble(255), ParticleEmitterScript.fromDouble(255), ParticleEmitterScript.fromDouble(255));
+    public Colour(double v, double v1, double v2) throws InvocationTargetException, NoSuchMethodException, InstantiationException, IllegalAccessException {
+        this(ParticleEmitterScript.fromDouble(v), ParticleEmitterScript.fromDouble(v1), ParticleEmitterScript.fromDouble(v2));
     }
 
     public static Colour fromJson(JsonElement color) throws InvocationTargetException, NoSuchMethodException, InstantiationException, IllegalAccessException {

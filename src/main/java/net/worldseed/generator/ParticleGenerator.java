@@ -9,7 +9,12 @@ import java.util.Map;
 
 public class ParticleGenerator {
     public static ParticlePacket buildParticle(Particle particleType, double x, double y, double z, double size, double velocityX, double velocityY, double velocityZ, double r, double g, double b) {
+        return buildParticle(particleType, x, y, z, size, velocityX, velocityY, velocityZ, r, g, b, 0, 0,0);
+    }
+
+    public static ParticlePacket buildParticle(Particle particleType, double x, double y, double z, double size, double velocityX, double velocityY, double velocityZ, double r, double g, double b, double r2, double g2, double b2) {
         if (particleType == Particle.DUST) return buildDust(x, y, z, size, r, g, b);
+        else if (particleType == Particle.DUST_COLOR_TRANSITION) return buildDustTransition(x, y, z, size, r, g, b, r2, g2, b2);
         else if (particleType == Particle.NOTE) return buildNote(x, y, z, r, g, b);
         else if (particleType == Particle.ENTITY_EFFECT) return buildEffect(x, y, z, r, g, b);
         else if (particleType == Particle.AMBIENT_ENTITY_EFFECT) return buildEffectAmbient(x, y, z, r, g, b);
@@ -19,6 +24,18 @@ public class ParticleGenerator {
                 || particleType == Particle.SOUL_FIRE_FLAME
             ) return buildDirectional(particleType, x, y, z, velocityX, velocityY, velocityZ);
         else return buildGeneric(particleType, x, y, z);
+    }
+
+    private static ParticlePacket buildDustTransition(double x, double y, double z, double size, double r, double g, double b, double r2, double g2, double b2) {
+        BinaryWriter writer = new BinaryWriter();
+        writer.writeFloat((float) r);
+        writer.writeFloat((float) g);
+        writer.writeFloat((float) b);
+        writer.writeFloat((float) size);
+        writer.writeFloat((float) r2);
+        writer.writeFloat((float) g2);
+        writer.writeFloat((float) b2);
+        return new ParticlePacket(Particle.DUST_COLOR_TRANSITION.id(), true, x, y, z, 0, 0, 0, 0, 0, writer.toByteArray());
     }
 
     private static ParticlePacket buildGeneric(Particle p, double x, double y, double z) {
