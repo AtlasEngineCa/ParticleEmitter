@@ -70,17 +70,17 @@ public record EmitterShapeSphere(ParticleEmitterScript offsetX, ParticleEmitterS
         double z = offsetZ.evaluate(particleEmitter);
 
         if (surfaceOnly) {
-            double theta = Math.random() * 2 * Math.PI;
-            double phi = Math.acos(2 * Math.random() - 1);
-
+            var theta = Math.random() * Math.PI * 2;
+            var v = Math.random();
+            var phi = Math.acos((2*v)-1);
             x += radius * Math.sin(phi) * Math.cos(theta);
             y += radius * Math.sin(phi) * Math.sin(theta);
             z += radius * Math.cos(phi);
         } else {
-            double theta = Math.random() * 2 * Math.PI;
-            double phi = Math.acos(2 * Math.random() - 1);
-            double r = Math.random() * radius;
-
+            var theta = Math.random() * Math.PI * 2;
+            var v = Math.random();
+            var phi = Math.acos((2*v)-1);
+            var r = Math.pow(Math.random(), 1.0/3) * radius;
             x += r * Math.sin(phi) * Math.cos(theta);
             y += r * Math.sin(phi) * Math.sin(theta);
             z += r * Math.cos(phi);

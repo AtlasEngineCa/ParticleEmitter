@@ -37,20 +37,14 @@ public record ParticleAppearanceTinting(Map<Double, Colour> color, ParticleEmitt
 
                 if (gradient.isJsonObject()) {
                     for (Map.Entry<String, JsonElement> entry : colors.getAsJsonObject().get("gradient").getAsJsonObject().entrySet()) {
-                        String r = entry.getValue().getAsJsonArray().get(0).getAsString();
-                        String g = entry.getValue().getAsJsonArray().get(1).getAsString();
-                        String b = entry.getValue().getAsJsonArray().get(2).getAsString();
-
-                        map.put(Double.parseDouble(entry.getKey()), new Colour(r, g, b));
+                        var c = Colour.fromJson(entry.getValue());
+                        map.put(Double.parseDouble(entry.getKey()), c);
                     }
                 } else {
                     JsonArray gradientArray = gradient.getAsJsonArray();
                     for (int i = 0; i < gradientArray.size(); i++) {
-                        String r = gradientArray.get(i).getAsJsonArray().get(0).getAsString();
-                        String g = gradientArray.get(i).getAsJsonArray().get(1).getAsString();
-                        String b = gradientArray.get(i).getAsJsonArray().get(2).getAsString();
-
-                        map.put((double) i / (gradientArray.size() - 1), new Colour(r, g, b));
+                        Colour c = Colour.fromJson(gradientArray.get(i));
+                        map.put((double) i / (gradientArray.size() - 1), c);
                     }
                 }
             } else {
@@ -58,11 +52,8 @@ public record ParticleAppearanceTinting(Map<Double, Colour> color, ParticleEmitt
                     String key = entry.getKey();
                     JsonElement value = entry.getValue();
 
-                    String r = value.getAsJsonArray().get(0).getAsString();
-                    String g = value.getAsJsonArray().get(1).getAsString();
-                    String b = value.getAsJsonArray().get(2).getAsString();
-
-                    map.put(Double.parseDouble(key), new Colour(r, g, b));
+                    var c = Colour.fromJson(value);
+                    map.put(Double.parseDouble(key), c);
                 }
             }
         }
