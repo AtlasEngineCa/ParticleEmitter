@@ -21,6 +21,8 @@ import java.util.List;
 import java.util.Set;
 
 public class ParticleEmitter extends ParticleInterface {
+    private final net.minestom.server.particle.Particle type;
+
     private Set<Particle> particles = new HashSet<>();
     private final int updatesPerSecond;
 
@@ -99,7 +101,7 @@ public class ParticleEmitter extends ParticleInterface {
         this.yaw = yaw;
     }
 
-    ParticleEmitter(int updatesPerSecond, EmitterInitialization initialization, EmitterLocalSpace local_space,
+    ParticleEmitter(net.minestom.server.particle.Particle type, int updatesPerSecond, EmitterInitialization initialization, EmitterLocalSpace local_space,
                            EmitterLifetime lifetime, EmitterRate rate, EmitterShape shape,
                            ParticleInitialSpeed particleSpeed, ParticleAppearanceTinting particleColour, ParticleLifetime particleLifetime) {
         this.emitter_age = 0;
@@ -120,6 +122,8 @@ public class ParticleEmitter extends ParticleInterface {
         this.particleLifetime = particleLifetime;
 
         this.updatesPerSecond = updatesPerSecond;
+
+        this.type = type;
 
         initialization.initialize(this);
     }
@@ -155,21 +159,12 @@ public class ParticleEmitter extends ParticleInterface {
         boolean canCreateParticle = rate.canEmit(this);
 
         if (canCreateParticle) {
-            Vec position = rotateAroundOrigin(yaw, shape.emitPosition(this)).add(this.offset);
-            // Vec direction = shape.emitDirection(this);
-            // if (direction == null) direction = Vec.ZERO;
-            // direction = direction.rotateFromView(yaw, 0);
-
-            Particle particle = new Particle(position, Vec.ZERO, this, particleColour, particleLifetime);
+            Particle particle = new Particle(type, shape, yaw, offset, this, particleColour, particleLifetime);
             // particles.add(particle);
             return List.of(particle.getPacket());
         }
 
         return List.of();
-    }
-
-    private Vec rotateAroundOrigin(float yaw, Vec emitPosition) {
-        return emitPosition.rotateAroundY(Math.toRadians(yaw));
     }
 
     @Override

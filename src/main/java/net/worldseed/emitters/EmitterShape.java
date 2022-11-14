@@ -1,9 +1,9 @@
 package net.worldseed.emitters;
 
 import net.minestom.server.coordinate.Vec;
-import net.worldseed.runtime.ParticleEmitter;
+import net.worldseed.runtime.ParticleInterface;
 
 public interface EmitterShape {
-    Vec emitPosition(ParticleEmitter particleEmitter);
-    Vec emitDirection(ParticleEmitter particleEmitter);
+    Vec emitPosition(ParticleInterface particleEmitter);
+    Vec emitDirection(ParticleInterface particleEmitter);
 }

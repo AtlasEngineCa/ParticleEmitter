@@ -1,5 +1,8 @@
 package net.worldseed.runtime;
 
+import net.minestom.server.coordinate.Point;
+import net.minestom.server.coordinate.Pos;
+import net.worldseed.emitters.EmitterShape;
 import net.worldseed.generator.ParticleGenerator;
 import net.worldseed.misc.Colour;
 import net.hollowcube.mql.foreign.Query;
@@ -15,6 +18,7 @@ public class Particle extends ParticleInterface {
     private final ParticleAppearanceTinting particleColour;
     private final ParticleLifetime particleLifetime;
     private final ParticlePacket packet;
+    private final net.minestom.server.particle.Particle type;
 
     double particle_age;
 
@@ -93,7 +97,7 @@ public class Particle extends ParticleInterface {
         return packet;
     }
 
-    public Particle(Vec start, Vec direction, ParticleEmitter emitter, ParticleAppearanceTinting particleColour, ParticleLifetime particleLifetime) throws InvocationTargetException, NoSuchMethodException, InstantiationException, IllegalAccessException {
+    public Particle(net.minestom.server.particle.Particle type, EmitterShape shape, float yaw, Point offset, ParticleEmitter emitter, ParticleAppearanceTinting particleColour, ParticleLifetime particleLifetime) throws InvocationTargetException, NoSuchMethodException, InstantiationException, IllegalAccessException {
         this.particle_age = 0;
 
         this.particle_random_1 = Math.random();
@@ -102,17 +106,28 @@ public class Particle extends ParticleInterface {
         this.particle_random_4 = Math.random();
 
         this.emitter = emitter;
+        this.type = type;
 
         this.particleColour = particleColour;
         this.particleLifetime = particleLifetime;
 
-        this.packet = draw(start, direction);
+        Vec position = rotateAroundOrigin(yaw, shape.emitPosition(this)).add(offset);
+        // Vec direction = shape.emitDirection(this);
+        // if (direction == null) direction = Vec.ZERO;
+        // direction = direction.rotateFromView(yaw, 0);
+
+        this.packet = draw(position, Vec.ZERO);
+    }
+
+    private Vec rotateAroundOrigin(float yaw, Vec emitPosition) {
+        return emitPosition.rotateAroundY(Math.toRadians(yaw));
     }
 
     public ParticlePacket draw(Vec start, Vec direction) throws InvocationTargetException, NoSuchMethodException, InstantiationException, IllegalAccessException {
         Colour colour = particleColour.evaluate(this);
 
-        return ParticleGenerator.buildParticle(net.minestom.server.particle.Particle.DUST,
+        return ParticleGenerator.buildParticle(
+                type,
                 start.x(),
                 start.y(),
                 start.z(),

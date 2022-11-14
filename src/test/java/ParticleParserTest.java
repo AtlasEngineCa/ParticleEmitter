@@ -2,6 +2,7 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonObject;
 import com.google.gson.stream.JsonReader;
+import net.minestom.server.particle.Particle;
 import org.junit.jupiter.api.Test;
 import net.worldseed.runtime.ParticleParser;
 import net.worldseed.runtime.ParticleEmitter;
@@ -22,7 +23,7 @@ public class ParticleParserTest {
         FileInputStream fis = new FileInputStream(file);
         JsonReader reader = new JsonReader(new InputStreamReader(fis, "UTF-8"));
         JsonObject map = GSON.fromJson(reader, JsonObject.class);
-        ParticleEmitter emitter = ParticleParser.parse(1000, map);
+        ParticleEmitter emitter = ParticleParser.parse(Particle.DUST, 1000, map);
     }
 
     @Test
@@ -31,6 +32,6 @@ public class ParticleParserTest {
         FileInputStream fis = new FileInputStream(file);
         JsonReader reader = new JsonReader(new InputStreamReader(fis, "UTF-8"));
         JsonObject map = GSON.fromJson(reader, JsonObject.class);
-        ParticleEmitter emitter = ParticleParser.parse(1000, map);
+        ParticleEmitter emitter = ParticleParser.parse(Particle.DUST, 1000, map);
     }
 }

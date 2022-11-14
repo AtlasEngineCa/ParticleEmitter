@@ -10,6 +10,7 @@ import net.worldseed.misc.EmitterPlaneNormalType;
 import net.minestom.server.coordinate.Vec;
 import net.worldseed.runtime.ParticleEmitter;
 import net.worldseed.runtime.ParticleEmitterScript;
+import net.worldseed.runtime.ParticleInterface;
 
 import java.lang.reflect.InvocationTargetException;
 
@@ -101,7 +102,7 @@ public record EmitterShapeDisc(EmitterPlaneNormalType planeNormalType,
     }
 
     @Override
-    public Vec emitPosition(ParticleEmitter particleEmitter) {
+    public Vec emitPosition(ParticleInterface particleEmitter) {
         double normalX = 0;
         double normalY = 0;
         double normalZ = 0;
@@ -144,7 +145,7 @@ public record EmitterShapeDisc(EmitterPlaneNormalType planeNormalType,
     }
 
     @Override
-    public Vec emitDirection(ParticleEmitter particleEmitter) {
+    public Vec emitDirection(ParticleInterface particleEmitter) {
         return null;
     }
 }

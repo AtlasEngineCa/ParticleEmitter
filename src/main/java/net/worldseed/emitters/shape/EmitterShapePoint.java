@@ -7,6 +7,7 @@ import net.worldseed.emitters.EmitterShape;
 import net.minestom.server.coordinate.Vec;
 import net.worldseed.runtime.ParticleEmitterScript;
 import net.worldseed.runtime.ParticleEmitter;
+import net.worldseed.runtime.ParticleInterface;
 
 import java.lang.reflect.InvocationTargetException;
 
@@ -60,12 +61,12 @@ public record EmitterShapePoint(ParticleEmitterScript offsetX, ParticleEmitterSc
     }
 
     @Override
-    public Vec emitPosition(ParticleEmitter particleEmitter) {
+    public Vec emitPosition(ParticleInterface particleEmitter) {
         return new Vec(offsetX.evaluate(particleEmitter), offsetY.evaluate(particleEmitter), offsetZ.evaluate(particleEmitter));
     }
 
     @Override
-    public Vec emitDirection(ParticleEmitter particleEmitter) {
+    public Vec emitDirection(ParticleInterface particleEmitter) {
         return new Vec(directionX.evaluate(particleEmitter), directionY.evaluate(particleEmitter), directionZ.evaluate(particleEmitter));
     }
 }

@@ -9,6 +9,7 @@ import net.worldseed.misc.EmitterDirectionType;
 import net.minestom.server.coordinate.Vec;
 import net.worldseed.runtime.ParticleEmitter;
 import net.worldseed.runtime.ParticleEmitterScript;
+import net.worldseed.runtime.ParticleInterface;
 
 import java.lang.reflect.InvocationTargetException;
 import java.util.Locale;
@@ -63,7 +64,7 @@ public record EmitterShapeSphere(ParticleEmitterScript offsetX, ParticleEmitterS
     }
 
     @Override
-    public Vec emitPosition(ParticleEmitter particleEmitter) {
+    public Vec emitPosition(ParticleInterface particleEmitter) {
         double radius = this.radius.evaluate(particleEmitter);
         double x = offsetX.evaluate(particleEmitter);
         double y = offsetY.evaluate(particleEmitter);
@@ -90,7 +91,7 @@ public record EmitterShapeSphere(ParticleEmitterScript offsetX, ParticleEmitterS
     }
 
     @Override
-    public Vec emitDirection(ParticleEmitter particleEmitter) {
+    public Vec emitDirection(ParticleInterface particleEmitter) {
         if (type == EmitterDirectionType.VELOCITY) {
             double x = directionX.evaluate(particleEmitter);
             double y = directionY.evaluate(particleEmitter);
