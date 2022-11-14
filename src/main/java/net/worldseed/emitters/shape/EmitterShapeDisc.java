@@ -8,7 +8,6 @@ import net.worldseed.emitters.EmitterShape;
 import net.worldseed.misc.EmitterDirectionType;
 import net.worldseed.misc.EmitterPlaneNormalType;
 import net.minestom.server.coordinate.Vec;
-import net.worldseed.runtime.ParticleEmitter;
 import net.worldseed.runtime.ParticleEmitterScript;
 import net.worldseed.runtime.ParticleInterface;
 
@@ -145,7 +144,17 @@ public record EmitterShapeDisc(EmitterPlaneNormalType planeNormalType,
     }
 
     @Override
-    public Vec emitDirection(ParticleInterface particleEmitter) {
-        return null;
+    public Vec emitDirection(Vec origin, ParticleInterface particleEmitter) {
+        return switch (type) {
+            case INWARDS -> origin.sub(emitPosition(particleEmitter)).normalize();
+            case OUTWARDS -> emitPosition(particleEmitter).sub(origin).normalize();
+            case VELOCITY ->
+                    new Vec(directionX.evaluate(particleEmitter), directionY.evaluate(particleEmitter), directionZ.evaluate(particleEmitter)).normalize();
+        };
+    }
+
+    @Override
+    public boolean canRotate() {
+        return type == EmitterDirectionType.VELOCITY;
     }
 }

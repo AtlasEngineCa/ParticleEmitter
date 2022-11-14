@@ -6,7 +6,6 @@ import com.google.gson.JsonObject;
 import net.worldseed.emitters.EmitterShape;
 import net.minestom.server.coordinate.Vec;
 import net.worldseed.runtime.ParticleEmitterScript;
-import net.worldseed.runtime.ParticleEmitter;
 import net.worldseed.runtime.ParticleInterface;
 
 import java.lang.reflect.InvocationTargetException;
@@ -14,18 +13,12 @@ import java.lang.reflect.InvocationTargetException;
 public record EmitterShapePoint(ParticleEmitterScript offsetX, ParticleEmitterScript offsetY, ParticleEmitterScript offsetZ,
                                 ParticleEmitterScript directionX, ParticleEmitterScript directionY, ParticleEmitterScript directionZ) implements EmitterShape {
     private static final JsonArray defaultOffset;
-    private static final JsonArray defaultDirection;
 
     static {
         defaultOffset = new JsonArray();
         defaultOffset.add("0");
         defaultOffset.add("0");
         defaultOffset.add("0");
-
-        defaultDirection = new JsonArray();
-        defaultDirection.add("0");
-        defaultDirection.add("0");
-        defaultDirection.add("0");
     }
 
     public EmitterShapePoint() throws InvocationTargetException, NoSuchMethodException, InstantiationException, IllegalAccessException {
@@ -47,15 +40,16 @@ public record EmitterShapePoint(ParticleEmitterScript offsetX, ParticleEmitterSc
         JsonArray offset = offsetEl == null ? defaultOffset : offsetEl.getAsJsonArray();
 
         JsonElement directionEl = asJsonObject.get("direction");
-        JsonArray direction = directionEl == null ? defaultDirection : directionEl.getAsJsonArray();
+
+        JsonArray direction = directionEl == null ? null : directionEl.getAsJsonArray();
 
         ParticleEmitterScript offsetX = ParticleEmitterScript.fromString(offset.get(0).getAsString());
         ParticleEmitterScript offsetY = ParticleEmitterScript.fromString(offset.get(1).getAsString());
         ParticleEmitterScript offsetZ = ParticleEmitterScript.fromString(offset.get(2).getAsString());
 
-        ParticleEmitterScript directionX = ParticleEmitterScript.fromString(direction.get(0).getAsString());
-        ParticleEmitterScript directionY = ParticleEmitterScript.fromString(direction.get(1).getAsString());
-        ParticleEmitterScript directionZ = ParticleEmitterScript.fromString(direction.get(2).getAsString());
+        ParticleEmitterScript directionX = direction == null ? null : ParticleEmitterScript.fromString(direction.get(0).getAsString());
+        ParticleEmitterScript directionY = direction == null ? null : ParticleEmitterScript.fromString(direction.get(1).getAsString());
+        ParticleEmitterScript directionZ = direction == null ? null : ParticleEmitterScript.fromString(direction.get(2).getAsString());
 
         return new EmitterShapePoint(offsetX, offsetY, offsetZ, directionX, directionY, directionZ);
     }
@@ -66,7 +60,16 @@ public record EmitterShapePoint(ParticleEmitterScript offsetX, ParticleEmitterSc
     }
 
     @Override
-    public Vec emitDirection(ParticleInterface particleEmitter) {
-        return new Vec(directionX.evaluate(particleEmitter), directionY.evaluate(particleEmitter), directionZ.evaluate(particleEmitter));
+    public Vec emitDirection(Vec origin, ParticleInterface particleEmitter) {
+        if (directionX == null) {
+            return new Vec(Math.random(), Math.random(), Math.random()).normalize();
+        } else {
+            return new Vec(directionX.evaluate(particleEmitter), directionY.evaluate(particleEmitter), directionZ.evaluate(particleEmitter)).normalize();
+        }
+    }
+
+    @Override
+    public boolean canRotate() {
+        return true;
     }
 }

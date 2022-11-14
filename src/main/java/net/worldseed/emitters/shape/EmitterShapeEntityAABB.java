@@ -7,7 +7,6 @@ import net.worldseed.emitters.EmitterShape;
 import net.worldseed.misc.EmitterDirectionType;
 import net.minestom.server.coordinate.Vec;
 import net.worldseed.runtime.ParticleEmitterScript;
-import net.worldseed.runtime.ParticleEmitter;
 import net.worldseed.runtime.ParticleInterface;
 
 import java.lang.reflect.InvocationTargetException;
@@ -51,7 +50,12 @@ public record EmitterShapeEntityAABB(boolean surfaceOnly,
     }
 
     @Override
-    public Vec emitDirection(ParticleInterface particleEmitter) {
+    public Vec emitDirection(Vec origin, ParticleInterface particleEmitter) {
         return null;
+    }
+
+    @Override
+    public boolean canRotate() {
+        return false;
     }
 }

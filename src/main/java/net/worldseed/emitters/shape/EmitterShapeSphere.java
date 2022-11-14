@@ -7,7 +7,6 @@ import com.google.gson.JsonPrimitive;
 import net.worldseed.emitters.EmitterShape;
 import net.worldseed.misc.EmitterDirectionType;
 import net.minestom.server.coordinate.Vec;
-import net.worldseed.runtime.ParticleEmitter;
 import net.worldseed.runtime.ParticleEmitterScript;
 import net.worldseed.runtime.ParticleInterface;
 
@@ -91,17 +90,17 @@ public record EmitterShapeSphere(ParticleEmitterScript offsetX, ParticleEmitterS
     }
 
     @Override
-    public Vec emitDirection(ParticleInterface particleEmitter) {
-        if (type == EmitterDirectionType.VELOCITY) {
-            double x = directionX.evaluate(particleEmitter);
-            double y = directionY.evaluate(particleEmitter);
-            double z = directionZ.evaluate(particleEmitter);
+    public Vec emitDirection(Vec origin, ParticleInterface particleEmitter) {
+        return switch (type) {
+            case INWARDS -> origin.sub(emitPosition(particleEmitter)).normalize();
+            case OUTWARDS -> emitPosition(particleEmitter).sub(origin).normalize();
+            case VELOCITY ->
+                    new Vec(directionX.evaluate(particleEmitter), directionY.evaluate(particleEmitter), directionZ.evaluate(particleEmitter)).normalize();
+        };
+    }
 
-            return new Vec(x, y, z);
-        } else if (type == EmitterDirectionType.INWARDS){
-            return emitPosition(particleEmitter).normalize();
-        } else {
-            return Vec.ZERO.sub(emitPosition(particleEmitter).normalize());
-        }
+    @Override
+    public boolean canRotate() {
+        return type == EmitterDirectionType.VELOCITY;
     }
 }

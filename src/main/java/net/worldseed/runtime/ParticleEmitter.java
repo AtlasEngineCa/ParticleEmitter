@@ -159,7 +159,7 @@ public class ParticleEmitter extends ParticleInterface {
         boolean canCreateParticle = rate.canEmit(this);
 
         if (canCreateParticle) {
-            Particle particle = new Particle(type, shape, yaw, offset, this, particleColour, particleLifetime);
+            Particle particle = new Particle(type, shape, yaw, offset, this, particleColour, particleLifetime, particleSpeed);
             // particles.add(particle);
             return List.of(particle.getPacket());
         }

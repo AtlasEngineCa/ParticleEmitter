@@ -5,5 +5,6 @@ import net.worldseed.runtime.ParticleInterface;
 
 public interface EmitterShape {
     Vec emitPosition(ParticleInterface particleEmitter);
-    Vec emitDirection(ParticleInterface particleEmitter);
+    Vec emitDirection(Vec origin, ParticleInterface particleEmitter);
+    boolean canRotate();
 }

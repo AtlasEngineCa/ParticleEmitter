@@ -8,7 +8,6 @@ import net.worldseed.emitters.EmitterShape;
 import net.worldseed.misc.EmitterDirectionType;
 import net.minestom.server.coordinate.Vec;
 import net.worldseed.runtime.ParticleEmitterScript;
-import net.worldseed.runtime.ParticleEmitter;
 import net.worldseed.runtime.ParticleInterface;
 
 import java.lang.reflect.InvocationTargetException;
@@ -95,16 +94,17 @@ public record EmitterShapeBox(ParticleEmitterScript offsetX, ParticleEmitterScri
     }
 
     @Override
-    public Vec emitDirection(ParticleInterface particleEmitter) {
-        if (type == EmitterDirectionType.VELOCITY) {
-            double x = directionX.evaluate(particleEmitter);
-            double y = directionY.evaluate(particleEmitter);
-            double z = directionZ.evaluate(particleEmitter);
-            return new Vec(x, y, z);
-        } else if (type == EmitterDirectionType.OUTWARDS) {
-            return emitPosition(particleEmitter).normalize();
-        } else {
-            return Vec.ZERO.sub(emitPosition(particleEmitter).normalize());
-        }
+    public Vec emitDirection(Vec origin, ParticleInterface particleEmitter) {
+        return switch (type) {
+            case INWARDS -> origin.sub(emitPosition(particleEmitter)).normalize();
+            case OUTWARDS -> emitPosition(particleEmitter).sub(origin).normalize();
+            case VELOCITY ->
+                    new Vec(directionX.evaluate(particleEmitter), directionY.evaluate(particleEmitter), directionZ.evaluate(particleEmitter)).normalize();
+        };
+    }
+
+    @Override
+    public boolean canRotate() {
+        return type == EmitterDirectionType.VELOCITY;
     }
 }

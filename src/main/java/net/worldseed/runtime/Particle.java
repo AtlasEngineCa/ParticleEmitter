@@ -7,6 +7,7 @@ import net.hollowcube.mql.foreign.Query;
 import net.minestom.server.coordinate.Vec;
 import net.minestom.server.network.packet.server.play.ParticlePacket;
 import net.worldseed.particle.ParticleAppearanceTinting;
+import net.worldseed.particle.ParticleInitialSpeed;
 import net.worldseed.particle.ParticleLifetime;
 
 import java.lang.reflect.InvocationTargetException;
@@ -18,6 +19,7 @@ public class Particle extends ParticleInterface {
     private final ParticleLifetime particleLifetime;
     private final ParticlePacket packet;
     private final net.minestom.server.particle.Particle type;
+    private final ParticleInitialSpeed speed;
 
     double particle_age;
 
@@ -98,7 +100,7 @@ public class Particle extends ParticleInterface {
         return packet;
     }
 
-    public Particle(net.minestom.server.particle.Particle type, EmitterShape shape, float yaw, Point offset, ParticleEmitter emitter, ParticleAppearanceTinting particleColour, ParticleLifetime particleLifetime) throws InvocationTargetException, NoSuchMethodException, InstantiationException, IllegalAccessException {
+    public Particle(net.minestom.server.particle.Particle type, EmitterShape shape, float yaw, Point offset, ParticleEmitter emitter, ParticleAppearanceTinting particleColour, ParticleLifetime particleLifetime, ParticleInitialSpeed particleSpeed) throws InvocationTargetException, NoSuchMethodException, InstantiationException, IllegalAccessException {
         this.particle_age = 0;
 
         this.particle_random_1 = Math.random();
@@ -111,13 +113,27 @@ public class Particle extends ParticleInterface {
 
         this.particleColour = particleColour;
         this.particleLifetime = particleLifetime;
+        this.speed = particleSpeed;
 
-        Vec position = rotateAroundOrigin(yaw, shape.emitPosition(this)).add(offset);
-        // Vec direction = shape.emitDirection(this);
-        // if (direction == null) direction = Vec.ZERO;
-        // direction = direction.rotateFromView(yaw, 0);
+        yaw = 45;
 
-        this.packet = draw(position, Vec.ZERO);
+        Vec origin = rotateAroundOrigin(yaw, shape.emitPosition(this));
+        Vec position = origin.add(offset);
+
+        if (type == net.minestom.server.particle.Particle.SOUL_FIRE_FLAME
+                || type == net.minestom.server.particle.Particle.FLAME
+                || type == net.minestom.server.particle.Particle.SMOKE
+                || type == net.minestom.server.particle.Particle.FIREWORK) {
+            Vec s = new Vec(speed.speedX().evaluate(this), speed.speedY().evaluate(this), speed.speedZ().evaluate(this));
+            Vec direction = shape.emitDirection(origin, this).mul(s);
+
+            if (shape.canRotate()) {
+                direction = rotateAroundOrigin(yaw, direction);
+            }
+            this.packet = draw(position, direction);
+        } else {
+            this.packet = draw(position, Vec.ZERO);
+        }
     }
 
     private Vec rotateAroundOrigin(float yaw, Vec emitPosition) {
