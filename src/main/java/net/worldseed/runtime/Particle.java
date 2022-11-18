@@ -115,8 +115,6 @@ public class Particle extends ParticleInterface {
         this.particleLifetime = particleLifetime;
         this.speed = particleSpeed;
 
-        yaw = 45;
-
         Vec origin = rotateAroundOrigin(yaw, shape.emitPosition(this));
         Vec position = origin.add(offset);
 
