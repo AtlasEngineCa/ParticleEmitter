@@ -61,7 +61,7 @@ repositories {
 Add the library as a dependency
 ```
 dependencies {
-    implementation("net.worldseed.particleeffects:ParticleEffects:<version>")
+    implementation("net.worldseed.particleemitter:ParticleEmitter:<version>")
 }
 ```
 

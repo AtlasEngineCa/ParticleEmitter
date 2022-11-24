@@ -22,15 +22,15 @@ java.sourceCompatibility = JavaVersion.VERSION_17
 
 tasks.jar {
     manifest {
-        archiveBaseName.set("ParticleEffects")
+        archiveBaseName.set("ParticleEmitter")
     }
 }
 
 publishing {
     publications.create<MavenPublication>("maven") {
-        groupId = "net.worldseed.particleeffects"
-        artifactId = "ParticleEffects"
-        version = "1.3.13"
+        groupId = "net.worldseed.particleemitter"
+        artifactId = "ParticleEmitter"
+        version = "1.3.14"
 
         from(components["java"])
     }

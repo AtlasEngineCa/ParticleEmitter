@@ -4,8 +4,8 @@ import com.google.gson.JsonObject;
 import com.google.gson.stream.JsonReader;
 import net.minestom.server.particle.Particle;
 import org.junit.jupiter.api.Test;
-import net.worldseed.runtime.ParticleParser;
-import net.worldseed.runtime.ParticleEmitter;
+import net.worldseed.particleemitter.runtime.ParticleParser;
+import net.worldseed.particleemitter.runtime.ParticleEmitter;
 
 import java.io.File;
 import java.io.FileInputStream;
