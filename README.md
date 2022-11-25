@@ -65,7 +65,7 @@ dependencies {
 }
 ```
 
-The lastest version number can be found [here](https://reposilite.worldseed.online/#/public/net/worldseed/particleeffects/ParticleEffects)
+The lastest version number can be found [here](https://reposilite.worldseed.online/#/public/net/worldseed/particleemitter/ParticleEmitter)
 
 ### JAVA FLAGS
 
