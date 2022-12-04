@@ -188,4 +188,9 @@ public class ParticleEmitter extends ParticleInterface {
     public EmitterLifetime.LifetimeState status() {
         return state;
     }
+
+    @Override
+    public ParticleEmitter clone() {
+        return new ParticleEmitter(type, updatesPerSecond, initialization, local_space, lifetime, rate, shape, particleSpeed, particleColour, particleLifetime);
+    }
 }
