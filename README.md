@@ -86,7 +86,7 @@ ParticleEmitter supports the following features
 - Functions do not work
 
 Particle Restrictions
-- Velocity and acceleration don't work
+- Velocity only works on certain particles and acceleration don't work on any particles
 - Custom particle textures don't work
 - Curves have not been implemented
 - Particle lifetimes have not been implemented
