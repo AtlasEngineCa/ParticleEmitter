@@ -30,7 +30,7 @@ publishing {
     publications.create<MavenPublication>("maven") {
         groupId = "net.worldseed.particleemitter"
         artifactId = "ParticleEmitter"
-        version = "1.3.31"
+        version = "1.3.32"
 
         from(components["java"])
     }
