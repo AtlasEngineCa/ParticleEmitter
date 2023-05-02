@@ -8,8 +8,17 @@ import net.worldseed.particleemitter.runtime.ParticleInterface;
 import java.lang.reflect.InvocationTargetException;
 
 public final class ParticleLifetimeExpression implements ParticleLifetime {
+    public static final ParticleLifetime DEFAULT;
     private final ParticleEmitterScript expiration_expression;
     private final ParticleEmitterScript max_lifetime;
+
+    static {
+        try {
+            DEFAULT = new ParticleLifetimeExpression(ParticleEmitterScript.fromDouble(0), null);
+        } catch (InvocationTargetException | NoSuchMethodException | InstantiationException | IllegalAccessException e) {
+            throw new RuntimeException(e);
+        }
+    }
 
     public ParticleLifetimeExpression(ParticleEmitterScript expiration_expression, ParticleEmitterScript max_lifetime) {
         this.expiration_expression = expiration_expression;

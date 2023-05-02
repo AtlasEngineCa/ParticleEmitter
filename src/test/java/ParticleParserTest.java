@@ -34,4 +34,13 @@ public class ParticleParserTest {
         JsonObject map = GSON.fromJson(reader, JsonObject.class);
         ParticleEmitter emitter = ParticleParser.parse(Particle.DUST, 1000, map);
     }
+
+    @Test
+    public void parseError() throws IOException, InvocationTargetException, NoSuchMethodException, InstantiationException, IllegalAccessException {
+        File file = new File(root + "error.particle.json");
+        FileInputStream fis = new FileInputStream(file);
+        JsonReader reader = new JsonReader(new InputStreamReader(fis, "UTF-8"));
+        JsonObject map = GSON.fromJson(reader, JsonObject.class);
+        ParticleEmitter emitter = ParticleParser.parse(Particle.DUST, 1000, map);
+    }
 }

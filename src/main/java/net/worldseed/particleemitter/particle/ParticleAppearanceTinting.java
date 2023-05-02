@@ -13,6 +13,18 @@ import java.util.Map;
 import java.util.TreeMap;
 
 public record ParticleAppearanceTinting(Map<Double, Colour> color, ParticleEmitterScript interpolant) {
+    public static final ParticleAppearanceTinting DEFAULT;
+
+    static {
+        Map<Double, Colour> map = new TreeMap<>();
+        try {
+            map.put(0.0, new Colour(255, 255, 255));
+        } catch (InvocationTargetException | NoSuchMethodException | InstantiationException | IllegalAccessException e) {
+            throw new RuntimeException(e);
+        }
+        DEFAULT = new ParticleAppearanceTinting(map, null);
+    }
+
     public static ParticleAppearanceTinting parse(JsonObject particleAppearanceTinting) throws InvocationTargetException, NoSuchMethodException, InstantiationException, IllegalAccessException {
         JsonElement colors = particleAppearanceTinting.get("color");
 
