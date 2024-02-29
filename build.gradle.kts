@@ -30,7 +30,7 @@ publishing {
     publications.create<MavenPublication>("maven") {
         groupId = "net.worldseed.particleemitter"
         artifactId = "ParticleEmitter"
-        version = "1.3.32"
+        version = "1.3.35"
 
         from(components["java"])
     }
@@ -50,9 +50,11 @@ publishing {
 dependencies {
     testImplementation("org.junit.jupiter:junit-jupiter-api:5.8.1")
     testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:5.8.1")
-    compileOnly("com.github.Minestom:Minestom:8ad2c7701f")
-    testImplementation("com.github.Minestom:Minestom:8ad2c7701f")
-    implementation("com.github.hollow-cube.common:mql:117d7c64b1")
+
+    compileOnly("net.minestom:minestom-snapshots:5162a00b1e")
+    testImplementation("net.minestom:minestom-snapshots:5162a00b1e")
+
+    implementation("com.github.hollow-cube.common:mql:2b48ad430f")
 }
 
 tasks.getByName<Test>("test") {

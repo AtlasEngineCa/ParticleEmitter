@@ -2,6 +2,8 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonObject;
 import com.google.gson.stream.JsonReader;
+import net.minestom.server.event.player.AsyncPlayerConfigurationEvent;
+import net.minestom.server.instance.LightingChunk;
 import net.minestom.server.particle.Particle;
 import net.worldseed.particleemitter.emitters.EmitterLifetime;
 import net.minestom.server.MinecraftServer;
@@ -10,7 +12,6 @@ import net.minestom.server.coordinate.Vec;
 import net.minestom.server.entity.GameMode;
 import net.minestom.server.entity.Player;
 import net.minestom.server.event.GlobalEventHandler;
-import net.minestom.server.event.player.PlayerLoginEvent;
 import net.minestom.server.instance.InstanceContainer;
 import net.minestom.server.instance.InstanceManager;
 import net.minestom.server.instance.block.Block;
@@ -36,6 +37,7 @@ public class Demo {
         InstanceManager instanceManager = MinecraftServer.getInstanceManager();
         InstanceContainer instanceContainer = instanceManager.createInstanceContainer();
         instanceContainer.setGenerator(unit -> unit.modifier().fillHeight(0, 40, Block.STONE));
+        instanceContainer.setChunkSupplier(LightingChunk::new);
 
         File file = new File("./src/test/resources/particles/rgb.particle.json");
         FileInputStream fis = new FileInputStream(file);
@@ -51,7 +53,7 @@ public class Demo {
 
         // Add an event callback to specify the spawning instance (and the spawn position)
         GlobalEventHandler globalEventHandler = MinecraftServer.getGlobalEventHandler();
-        globalEventHandler.addListener(PlayerLoginEvent.class, event -> {
+        globalEventHandler.addListener(AsyncPlayerConfigurationEvent.class, event -> {
             final Player player = event.getPlayer();
             player.setPermissionLevel(2);
             player.setGameMode(GameMode.CREATIVE);
@@ -62,11 +64,6 @@ public class Demo {
                 emitter.setPosition(new Vec(0, 60, 0));
             }
         });
-
-        // globalEventHandler.addListener(PlayerMoveEvent.class, event -> {
-        //     emitter.setRotation(-event.getPlayer().getPosition().yaw());
-        //     emitter.setPosition(event.getPlayer().getPosition().add(0, 1.1, 0));
-        // });
 
         MinecraftServer.getSchedulerManager().scheduleTask(() -> {
             try {
