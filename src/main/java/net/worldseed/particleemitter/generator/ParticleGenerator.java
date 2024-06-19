@@ -4,8 +4,6 @@ import net.minestom.server.color.Color;
 import net.minestom.server.coordinate.Vec;
 import net.minestom.server.network.packet.server.play.ParticlePacket;
 import net.minestom.server.particle.Particle;
-import net.minestom.server.particle.data.DustColorTransitionParticleData;
-import net.minestom.server.particle.data.DustParticleData;
 
 import java.util.Map;
 
@@ -19,7 +17,6 @@ public class ParticleGenerator {
         else if (particleType == Particle.DUST_COLOR_TRANSITION) return buildDustTransition(x, y, z, size, r, g, b, r2, g2, b2);
         else if (particleType == Particle.NOTE) return buildNote(x, y, z, r, g, b);
         else if (particleType == Particle.ENTITY_EFFECT) return buildEffect(x, y, z, r, g, b);
-        else if (particleType == Particle.AMBIENT_ENTITY_EFFECT) return buildEffectAmbient(x, y, z, r, g, b);
         else if (particleType == Particle.FLAME
                 || particleType == Particle.SMOKE
                 || particleType == Particle.FIREWORK
@@ -29,8 +26,8 @@ public class ParticleGenerator {
     }
 
     private static ParticlePacket buildDustTransition(double x, double y, double z, double size, double r, double g, double b, double r2, double g2, double b2) {
-        DustColorTransitionParticleData data = new DustColorTransitionParticleData(new Color((int) (r * 255), (int) (g * 255), (int) (b * 255)), (float) size, new Color((int) (r2 * 255), (int) (g2 * 255), (int) (b2 * 255)));
-        return new ParticlePacket(Particle.DUST_COLOR_TRANSITION.id(), true, x, y, z, 0, 0, 0, 0, 0, data);
+        Particle.DustColorTransition data = Particle.DUST_COLOR_TRANSITION.withProperties(new Color((int) (r * 255), (int) (g * 255), (int) (b * 255)), (float) size, new Color((int) (r2 * 255), (int) (g2 * 255), (int) (b2 * 255))) ;
+        return new ParticlePacket(data, true, x, y, z, 0, 0, 0, 0, 0);
     }
 
     private static ParticlePacket buildGeneric(Particle p, double x, double y, double z) {
@@ -42,20 +39,16 @@ public class ParticleGenerator {
         double size = vec.length();
         vec = vec.normalize();
 
-        return new ParticlePacket(p.id(), true, x, y, z, (float) vec.x(), (float) vec.y(), (float) vec.z(), (float) size, 0, p.data());
+        return new ParticlePacket(p, true, x, y, z, (float) vec.x(), (float) vec.y(), (float) vec.z(), (float) size, 0);
     }
 
     private static ParticlePacket buildDust(double x, double y, double z, double size, double r, double g, double b) {
-        DustParticleData data = new DustParticleData(new Color((int) (r * 255), (int) (g * 255), (int) (b * 255)), (float) size);
-        return new ParticlePacket(Particle.DUST.id(), true, x, y, z, 0, 0, 0, 0, 0, data);
+        Particle.Dust data = Particle.DUST.withProperties(new Color((int) (r * 255), (int) (g * 255), (int) (b * 255)), (float) size);
+        return new ParticlePacket(data, true, x, y, z, 0, 0, 0, 0, 0);
     }
 
     private static ParticlePacket buildEffect(double x, double y, double z, double r, double g, double b) {
-        return new ParticlePacket(Particle.ENTITY_EFFECT.id(), true, x, y, z, (float) r, (float) g, (float) b, 1, 0, Particle.ENTITY_EFFECT.data());
-    }
-
-    private static ParticlePacket buildEffectAmbient(double x, double y, double z, double r, double g, double b) {
-        return new ParticlePacket(Particle.AMBIENT_ENTITY_EFFECT.id(), true, x, y, z, (float) r, (float) g, (float) b, 1, 0, Particle.AMBIENT_ENTITY_EFFECT.data());
+        return new ParticlePacket(Particle.ENTITY_EFFECT, true, x, y, z, (float) r, (float) g, (float) b, 1, 0);
     }
 
     private static final Map<Vec, Double> noteColours = Map.ofEntries(
@@ -79,6 +72,6 @@ public class ParticleGenerator {
     }
 
     private static ParticlePacket buildNote(double x, double y, double z, double r, double g, double b) {
-        return new ParticlePacket(Particle.NOTE.id(), true, x, y, z, (float) (calculateMinDiff(r, g, b)), 0, 0, 1, 0, Particle.NOTE.data());
+        return new ParticlePacket(Particle.NOTE, true, x, y, z, (float) (calculateMinDiff(r, g, b)), 0, 0, 1, 0);
     }
 }

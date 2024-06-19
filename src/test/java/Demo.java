@@ -23,9 +23,7 @@ import net.worldseed.particleemitter.runtime.ParticleParser;
 
 import java.io.*;
 import java.lang.reflect.InvocationTargetException;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
+import java.util.*;
 
 public class Demo {
     static final Gson GSON = new GsonBuilder().setPrettyPrinting().disableHtmlEscaping().create();
@@ -65,24 +63,26 @@ public class Demo {
             }
         });
 
-        MinecraftServer.getSchedulerManager().scheduleTask(() -> {
-            try {
-                for (var emitter : emitters) {
-                    Collection<ParticlePacket> packets = emitter.tick();
+        new Timer().schedule(new TimerTask() {
+            public void run()  {
+                try {
+                    for (var emitter : emitters) {
+                        Collection<ParticlePacket> packets = emitter.tick();
 
-                    if (emitter.status() != EmitterLifetime.LifetimeState.DEAD) {
-                        packets.forEach(packet -> {
-                            instanceContainer.getPlayers().forEach(p -> p.sendPackets(packet));
-                        });
-                    } else {
-                        emitter.reset();
+                        if (emitter.status() != EmitterLifetime.LifetimeState.DEAD) {
+                            packets.forEach(packet -> {
+                                instanceContainer.getPlayers().forEach(p -> p.sendPackets(packet));
+                            });
+                        } else {
+                            emitter.reset();
+                        }
                     }
+                } catch (InvocationTargetException | NoSuchMethodException | InstantiationException |
+                         IllegalAccessException e) {
+                    throw new RuntimeException(e);
                 }
-            } catch (InvocationTargetException | NoSuchMethodException | InstantiationException |
-                     IllegalAccessException e) {
-                throw new RuntimeException(e);
             }
-        }, TaskSchedule.immediate(), TaskSchedule.millis(1), ExecutionType.ASYNC);
+        }, 1, 1);
 
         // Start the server on port 25565
         minecraftServer.start("0.0.0.0", 25565);
