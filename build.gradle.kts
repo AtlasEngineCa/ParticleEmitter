@@ -29,7 +29,7 @@ publishing {
     publications.create<MavenPublication>("maven") {
         groupId = "net.worldseed.particleemitter"
         artifactId = "ParticleEmitter"
-        version = "1.3.35"
+        version = "1.4.1"
 
         from(components["java"])
     }
@@ -50,8 +50,8 @@ dependencies {
     testImplementation("org.junit.jupiter:junit-jupiter-api:5.8.1")
     testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:5.8.1")
 
-    compileOnly("net.minestom:minestom-snapshots:f1d5940855")
-    testImplementation("net.minestom:minestom-snapshots:f1d5940855")
+    compileOnly("net.minestom:minestom-snapshots:1f34e60ea6")
+    testImplementation("net.minestom:minestom-snapshots:1f34e60ea6")
 
     implementation("dev.hollowcube:mql:1.0.1")
 }

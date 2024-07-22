@@ -26,7 +26,7 @@ public class ParticleGenerator {
     }
 
     private static ParticlePacket buildDustTransition(double x, double y, double z, double size, double r, double g, double b, double r2, double g2, double b2) {
-        Particle.DustColorTransition data = Particle.DUST_COLOR_TRANSITION.withProperties(new Color((int) (r * 255), (int) (g * 255), (int) (b * 255)), (float) size, new Color((int) (r2 * 255), (int) (g2 * 255), (int) (b2 * 255))) ;
+        Particle.DustColorTransition data = Particle.DUST_COLOR_TRANSITION.withProperties(new Color((int) (r * 255), (int) (g * 255), (int) (b * 255)), new Color((int) (r2 * 255), (int) (g2 * 255), (int) (b2 * 255)), (float) size);
         return new ParticlePacket(data, true, x, y, z, 0, 0, 0, 0, 0);
     }
 
