@@ -118,6 +118,42 @@ List<ParticleEmitter> emitters = new ArrayList<>();
     emitters.add(emitter);
 }
 ```
+Sample code for how this can be done in practice can be found in the `src/test/java/ParticleManagerDemo.java` file, where the video demonstration above was created with these calls:
+```java
+ParticleManager.playParticle("rect.particle.json", new Vec(0, 45, 0), 1, instanceContainer, false);
+ParticleManager.playParticle("rect.particle.json", new Vec(3, 45, 0), 2, instanceContainer, false);
+ParticleManager.playParticle("rect.particle.json", new Vec(6, 45, 0), 3, instanceContainer, false);
+ParticleManager.playParticle("rect.particle.json", new Vec(9, 45, 0), 4, instanceContainer, false);
+```
+
+### Playing a particle animation "once" over its lifetime
+If you want to have an animation play just once over its lifetime, you will need to use a Timer that gets cancelled once the emitter state is "DEAD" (meaning the animation completed successfully). Here is how that would be done in practice:
+
+```java
+new Timer().schedule(new TimerTask() {
+    public void run()  {
+        try {
+            for (var emitter : emitters) {
+                for (int i = 0; i < amount; i++) {
+                    Collection<ParticlePacket> packets = emitter.tick();
+                    if (emitter.status() != EmitterLifetime.LifetimeState.DEAD) {
+                        packets.forEach(packet -> {
+                            instance.getPlayers().forEach(p -> p.sendPackets(packet));
+                        });
+                    } else {
+                        emitter.reset();
+                        // Cancel the timer so it doesn't keep looping
+                        this.cancel();
+                    }
+                }
+            }
+        } catch (InvocationTargetException | NoSuchMethodException | InstantiationException |
+                 IllegalAccessException e) {
+            throw new RuntimeException(e);
+        }
+    }
+}, 1, 1);
+```
 
 
 
