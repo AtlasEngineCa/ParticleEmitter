@@ -91,6 +91,36 @@ Particle Restrictions
 - Curves have not been implemented
 - Particle lifetimes have not been implemented
 
+## Usage notes
+
+### Particle amounts
+You may notice in practice that only one particle gets spawned per `emitter.tick()`. 
+In some cases, this may be a problem as you may want to have more control over the amount of particles spawned for the same animation as demonstrated in the following video where the same animation is being played in 4 different positions with differing particle amounts:
+https://github.com/user-attachments/assets/8fd4f277-eb8d-4a3e-b068-18533f72346a
+
+This can be achieved by using a for loop around the `emitter.tick()` like so:
+```java
+Collection<ParticlePacket> packets = new ArrayList<>();
+for (int i = 0; i < amount; i++) {
+    packets.addAll(emitter.tick());
+}
+if (emitter.status() != EmitterLifetime.LifetimeState.DEAD) {
+    packets.forEach(packet -> {
+        instance.getPlayers().forEach(p -> p.sendPackets(packet));
+    });
+}
+```
+However, this method will require each emitter to have a different `updatesPerSecond` parameter equal to `x*amount` for the animations to be synchronised and play at the same time with differing particle counts, otherwise the animation may speed up or slow down.
+```java
+List<ParticleEmitter> emitters = new ArrayList<>();
+{
+    var emitter = ParticleParser.parse(Particle.DUST_COLOR_TRANSITION, 1000*amount, map);
+    emitters.add(emitter);
+}
+```
+
+
+
 <p align="right">(<a href="#top">back to top</a>)</p>
 
 <!-- MARKDOWN LINKS & IMAGES -->
