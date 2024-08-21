@@ -91,6 +91,72 @@ Particle Restrictions
 - Curves have not been implemented
 - Particle lifetimes have not been implemented
 
+## Usage notes
+
+### Particle amounts
+You may notice in practice that only one particle gets spawned per `emitter.tick()`. 
+In some cases, this may be a problem as you may want to have more control over the amount of particles spawned for the same animation as demonstrated in the following video where the same animation is being played in 4 different positions with differing particle amounts:
+https://github.com/user-attachments/assets/8fd4f277-eb8d-4a3e-b068-18533f72346a
+
+This can be achieved by using a for loop around the `emitter.tick()` like so:
+```java
+Collection<ParticlePacket> packets = new ArrayList<>();
+for (int i = 0; i < amount; i++) {
+    packets.addAll(emitter.tick());
+}
+if (emitter.status() != EmitterLifetime.LifetimeState.DEAD) {
+    packets.forEach(packet -> {
+        instance.getPlayers().forEach(p -> p.sendPackets(packet));
+    });
+}
+```
+However, this method will require each emitter to have a different `updatesPerSecond` parameter equal to `x*amount` for the animations to be synchronised and play at the same time with differing particle counts, otherwise the animation may speed up or slow down.
+```java
+List<ParticleEmitter> emitters = new ArrayList<>();
+{
+    var emitter = ParticleParser.parse(Particle.DUST_COLOR_TRANSITION, 1000*amount, map);
+    emitters.add(emitter);
+}
+```
+Sample code for how this can be done in practice can be found in the `src/test/java/ParticleManagerDemo.java` file, where the video demonstration above was created with these calls:
+```java
+ParticleManager.playParticle("rect.particle.json", new Vec(0, 45, 0), 1, instanceContainer, false);
+ParticleManager.playParticle("rect.particle.json", new Vec(3, 45, 0), 2, instanceContainer, false);
+ParticleManager.playParticle("rect.particle.json", new Vec(6, 45, 0), 3, instanceContainer, false);
+ParticleManager.playParticle("rect.particle.json", new Vec(9, 45, 0), 4, instanceContainer, false);
+```
+
+### Playing a particle animation "once" over its lifetime
+If you want to have an animation play just once over its lifetime, you will need to use a Timer that gets cancelled once the emitter state is "DEAD" (meaning the animation completed successfully). Here is how that would be done in practice:
+
+```java
+new Timer().schedule(new TimerTask() {
+    public void run()  {
+        try {
+            for (var emitter : emitters) {
+                for (int i = 0; i < amount; i++) {
+                    Collection<ParticlePacket> packets = emitter.tick();
+                    if (emitter.status() != EmitterLifetime.LifetimeState.DEAD) {
+                        packets.forEach(packet -> {
+                            instance.getPlayers().forEach(p -> p.sendPackets(packet));
+                        });
+                    } else {
+                        emitter.reset();
+                        // Cancel the timer so it doesn't keep looping
+                        this.cancel();
+                    }
+                }
+            }
+        } catch (InvocationTargetException | NoSuchMethodException | InstantiationException |
+                 IllegalAccessException e) {
+            throw new RuntimeException(e);
+        }
+    }
+}, 1, 1);
+```
+
+
+
 <p align="right">(<a href="#top">back to top</a>)</p>
 
 <!-- MARKDOWN LINKS & IMAGES -->
