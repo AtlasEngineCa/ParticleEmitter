@@ -54,7 +54,7 @@ Add the following to your `build.gradle.kts` file:
 
 ```
 repositories {
-    maven("https://reposilite.worldseed.online/public")
+    maven("https://reposilite.atlasengine.ca/public")
 }
 ```
 
@@ -65,7 +65,7 @@ dependencies {
 }
 ```
 
-The lastest version number can be found [here](https://reposilite.worldseed.online/#/public/net/worldseed/particleemitter/ParticleEmitter)
+The lastest version number can be found [here](https://reposilite.atlasengine.ca/#/public/net/worldseed/particleemitter/ParticleEmitter)
 
 ### JAVA FLAGS
 
